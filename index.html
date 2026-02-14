@@ -11,8 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- Favicon -->
-
     <link rel="icon" type="image/png" href="img/favicon.png">
     
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -76,6 +74,13 @@
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
+
+    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 hidden flex justify-center items-center p-4 backdrop-blur-sm transition-opacity duration-300" onclick="closeModal()">
+        <button class="absolute top-4 right-4 text-white hover:text-gold-400 z-[101]">
+            <i class="ph ph-x text-4xl"></i>
+        </button>
+        <img id="modalImg" src="" alt="Ampliação" class="max-h-[90vh] max-w-full object-contain rounded-sm shadow-2xl cursor-zoom-out" onclick="event.stopPropagation()">
+    </div>
 
     <nav class="fixed w-full z-50 transition-all duration-300 bg-zinc-950/80 backdrop-blur-md border-b border-white/5" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -271,7 +276,7 @@
                     <h2 class="text-3xl md:text-4xl font-serif text-white mt-3">Projetos Recentes</h2>
                 </div>
                 <div class="flex gap-2">
-                    <span class="text-gray-500 text-xs hidden md:block uppercase tracking-wider">Arraste para ver mais <i class="ph ph-hand-swipe-right ml-1"></i></span>
+                    <span class="text-gray-500 text-xs hidden md:block uppercase tracking-wider">Clique para ampliar <i class="ph ph-magnifying-glass-plus ml-1"></i></span>
                 </div>
             </div>
 
@@ -279,9 +284,9 @@
                 <div class="swiper-wrapper">
                     
                     <div class="swiper-slide h-auto">
-                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
-                            <img src="img/5.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Estante Industrial">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
+                            <img src="img/5.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Estante Industrial" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6 pointer-events-none">
                                 <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
                                 <h3 class="text-white font-serif text-xl">Bar espelhado</h3>
                             </div>
@@ -289,9 +294,9 @@
                     </div>
 
                     <div class="swiper-slide h-auto">
-                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
-                            <img src="img/ex2.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
+                            <img src="img/ex2.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6 pointer-events-none">
                                 <span class="text-gold-400 text-xs uppercase tracking-widest">Comercial</span>
                                 <h3 class="text-white font-serif text-xl">Estrutura de bar</h3>
                             </div>
@@ -299,9 +304,9 @@
                     </div>
 
                     <div class="swiper-slide h-auto">
-                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
-                            <img src="img/ex3.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
+                            <img src="img/ex3.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6 pointer-events-none">
                                 <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
                                 <h3 class="text-white font-serif text-xl">Canto Alemão</h3>
                             </div>
@@ -309,9 +314,9 @@
                     </div>
 
                     <div class="swiper-slide h-auto">
-                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
-                            <img src="img/ex1.webp" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
+                            <img src="img/ex1.webp" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6 pointer-events-none">
                                 <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
                                 <h3 class="text-white font-serif text-xl">Bancada funcional</h3>
                             </div>
@@ -319,9 +324,9 @@
                     </div>
 
                     <div class="swiper-slide h-auto">
-                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
-                            <img src="img/7.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Mesa de Centro">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
+                            <img src="img/7.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Mesa de Centro" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6 pointer-events-none">
                                 <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
                                 <h3 class="text-white font-serif text-xl">Bancos e mesa de área externa</h3>
                             </div>
@@ -329,9 +334,9 @@
                     </div>
 
                      <div class="swiper-slide h-auto">
-                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
-                            <img src="img/6.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Arara de Roupas">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
+                            <img src="img/6.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Arara de Roupas" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6 pointer-events-none">
                                 <span class="text-gold-400 text-xs uppercase tracking-widest">Comercial</span>
                                 <h3 class="text-white font-serif text-xl">Banco geométrico personalizado</h3>
                             </div>
@@ -425,6 +430,26 @@
                 navbar.classList.add('bg-zinc-950/80');
             }
         });
+
+        // --- FUNÇÕES DA LIGHTBOX (GALERIA) ---
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            
+            modalImg.src = imageSrc;
+            modal.classList.remove('hidden');
+            
+            // Trava o scroll da página atrás do modal
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            
+            // Libera o scroll da página
+            document.body.style.overflow = 'auto';
+        }
     </script>
     <script src="https://whatsa.me/bt-min.js?link=https://whatsa.me/5548984752196/?t=Gostaria%20de%20conhecer%20seu%20trabalho!"></script>
 </body>
