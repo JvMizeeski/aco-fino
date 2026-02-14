@@ -53,11 +53,21 @@
             position: relative;
         }
 
+        /* --- CONFIGURAÇÃO DO BACKGROUND HERO (MOBILE VS DESKTOP) --- */
         .hero-bg {
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(12,12,12,1)), url('img/back-hero.webp');
+            /* Mobile First (Padrão) */
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(12,12,12,1)), url('img/back-hero-mobile.webp');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-attachment: scroll; /* Scroll é melhor para performance mobile (iOS) */
+        }
+
+        /* A partir de telas médias (Tablets/Desktop), troca a imagem */
+        @media (min-width: 768px) {
+            .hero-bg {
+                background-image: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(12,12,12,1)), url('img/back-hero.webp');
+                background-attachment: fixed; /* Mantém o efeito parallax apenas no Desktop */
+            }
         }
 
         /* Paginação do Carrossel */
