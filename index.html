@@ -25,13 +25,13 @@
                 extend: {
                     colors: {
                         gold: {
-                            400: '#D4AF37', // Dourado Clássico
+                            400: '#D4AF37', 
                             500: '#C5A028',
                             600: '#B08D20',
                         },
                         zinc: {
-                            850: '#1f1f22', // Cinza Premium
-                            950: '#0c0c0c', // Quase preto
+                            850: '#1f1f22', 
+                            950: '#0c0c0c', 
                         }
                     },
                     fontFamily: {
@@ -44,21 +44,23 @@
     </script>
 
     <style>
-        /* Ajustes finos */
-        body { background-color: #0c0c0c; color: #f3f4f6; }
+        /* CORREÇÃO CRÍTICA DE SCROLL E LARGURA */
+        html, body { 
+            background-color: #0c0c0c; 
+            color: #f3f4f6;
+            overflow-x: hidden; /* Corta o scroll horizontal */
+            width: 100%;
+            position: relative;
+        }
+
         .hero-bg {
             background-image: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(12,12,12,1)), url('img/back-hero.webp');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
-        .text-gradient {
-            background: linear-gradient(to right, #D4AF37, #fef3c7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
 
-        /* Estilização dos Pontos do Carrossel (Paginação) */
+        /* Paginação do Carrossel */
         .swiper-pagination-bullet {
             background-color: #ffffff;
             opacity: 0.3;
@@ -66,14 +68,14 @@
             height: 10px;
         }
         .swiper-pagination-bullet-active {
-            background-color: #D4AF37 !important; /* Dourado */
+            background-color: #D4AF37 !important;
             opacity: 1;
             width: 12px;
             height: 12px;
         }
     </style>
 </head>
-<body class="antialiased overflow-x-hidden">
+<body class="antialiased selection:bg-gold-400 selection:text-black">
 
     <div id="imageModal" class="fixed inset-0 z-[100] bg-black/95 hidden flex justify-center items-center p-4 backdrop-blur-sm transition-opacity duration-300" onclick="closeModal()">
         <button class="absolute top-4 right-4 text-white hover:text-gold-400 z-[101]">
@@ -86,7 +88,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0 cursor-pointer flex items-center">
-                    <img src="img/logo-site.png" alt="Logo Aço Fino" class="h-12 w-auto object-contain">
+                    <img src="img/logo-site.png" alt="Logo Aço Fino" class="h-10 md:h-12 w-auto object-contain">
                 </div>
                 
                 <div class="hidden md:block">
@@ -108,32 +110,35 @@
             </div>
         </div>
 
-        <div class="md:hidden hidden bg-zinc-900 border-t border-zinc-800" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#sobre" class="text-gray-300 hover:text-gold-400 block px-3 py-2 text-base font-medium">Sobre</a>
-                <a href="#servicos" class="text-gray-300 hover:text-gold-400 block px-3 py-2 text-base font-medium">Serviços</a>
-                <a href="#portfolio" class="text-gray-300 hover:text-gold-400 block px-3 py-2 text-base font-medium">Portfólio</a>
-                <a href="#contato" class="text-gold-400 font-bold block px-3 py-2 text-base">Solicitar Orçamento</a>
+        <div class="md:hidden hidden bg-zinc-900 border-t border-zinc-800 absolute w-full left-0 top-20 shadow-2xl" id="mobile-menu">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#sobre" onclick="toggleMenu()" class="text-gray-300 hover:text-gold-400 block px-3 py-3 text-base font-medium border-b border-white/5">Sobre</a>
+                <a href="#servicos" onclick="toggleMenu()" class="text-gray-300 hover:text-gold-400 block px-3 py-3 text-base font-medium border-b border-white/5">Serviços</a>
+                <a href="#portfolio" onclick="toggleMenu()" class="text-gray-300 hover:text-gold-400 block px-3 py-3 text-base font-medium border-b border-white/5">Portfólio</a>
+                <a href="#contato" onclick="toggleMenu()" class="text-gold-400 font-bold block px-3 py-3 text-base mt-2">Solicitar Orçamento <i class="ph ph-arrow-right ml-2"></i></a>
             </div>
         </div>
     </nav>
 
-    <header class="relative h-screen flex items-center justify-center hero-bg">
+    <header class="relative h-screen flex items-center justify-center hero-bg overflow-hidden">
         <div class="absolute inset-0 bg-black/40"></div>
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
-            <p class="text-gold-400 uppercase tracking-[0.3em] text-sm mb-4 font-bold">Mobiliário Industrial de Alto Padrão</p>
-            <h1 class="text-5xl md:text-7xl font-serif font-medium text-white mb-6 leading-tight">
+        <div class="relative z-10 text-center px-4 w-full max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
+            <p class="text-gold-400 uppercase tracking-widest text-xs md:text-sm mb-4 font-bold">Mobiliário Industrial de Alto Padrão</p>
+            
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-serif font-medium text-white mb-6 leading-tight break-words">
                 A robustez do aço.<br>
                 A delicadeza do <span class="italic text-gold-400">fino</span>.
             </h1>
-            <p class="text-gray-300 text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto">
+            
+            <p class="text-gray-300 text-base md:text-xl font-light mb-10 max-w-2xl mx-auto px-2">
                 Transformamos metal bruto e madeira nobre em identidade visual para sua casa ou negócio. Peças exclusivas, feitas à mão.
             </p>
-            <div class="flex flex-col md:flex-row gap-4 justify-center">
-                <a href="#contato" class="bg-gold-400 text-zinc-950 px-8 py-4 uppercase tracking-widest font-bold hover:bg-white transition-all w-full md:w-auto">
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center w-full px-4 md:px-0">
+                <a href="#contato" class="bg-gold-400 text-zinc-950 px-8 py-4 uppercase tracking-widest font-bold hover:bg-white transition-all w-full md:w-auto text-sm md:text-base">
                     Quero um Projeto Exclusivo
                 </a>
-                <a href="#portfolio" class="border border-white/30 text-white px-8 py-4 uppercase tracking-widest hover:bg-white hover:text-black transition-all w-full md:w-auto">
+                <a href="#portfolio" class="border border-white/30 text-white px-8 py-4 uppercase tracking-widest hover:bg-white hover:text-black transition-all w-full md:w-auto text-sm md:text-base">
                     Ver Galeria
                 </a>
             </div>
@@ -144,13 +149,13 @@
         </div>
     </header>
 
-    <section id="sobre" class="py-24 bg-zinc-950">
+    <section id="sobre" class="py-16 md:py-24 bg-zinc-950 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div data-aos="fade-right">
                     <div class="relative group">
                         <div class="absolute -inset-2 bg-gold-400/20 blur-lg group-hover:bg-gold-400/30 transition duration-500"></div>
-                        <img src="img/5.jpg" alt="Artesão trabalhando com solda" class="relative w-full h-[500px] object-cover grayscale hover:grayscale-0 transition duration-700 shadow-2xl">
+                        <img src="img/5.jpg" alt="Artesão trabalhando com solda" class="relative w-full h-[400px] md:h-[500px] object-cover grayscale hover:grayscale-0 transition duration-700 shadow-2xl rounded-sm">
                         <div class="absolute bottom-0 left-0 p-6 bg-black/60 backdrop-blur-sm w-full">
                             <p class="text-gold-400 text-xs tracking-widest uppercase">Mestre Artesão</p>
                             <p class="text-white font-serif text-xl">Rhafael Rachadel</p>
@@ -158,11 +163,11 @@
                     </div>
                 </div>
                 <div data-aos="fade-left">
-                    <h2 class="text-4xl font-serif text-white mb-6">A Arte de Fazer Bem Feito.</h2>
-                    <p class="text-gray-400 mb-6 leading-relaxed">
+                    <h2 class="text-3xl md:text-4xl font-serif text-white mb-6">A Arte de Fazer Bem Feito.</h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed text-sm md:text-base">
                         Em um mundo de produções em massa, escolhemos o caminho da excelência artesanal. Na <strong>Aço Fino</strong>, acreditamos que uma solda não deve apenas unir peças, ela deve ser invisível ao toque e agradável ao olhar.
                     </p>
-                    <p class="text-gray-400 mb-8 leading-relaxed">
+                    <p class="text-gray-400 mb-8 leading-relaxed text-sm md:text-base">
                         Cada peça que sai do nosso estúdio é projetada e executada pessoalmente, garantindo que o acabamento, a pintura epóxi e o tratamento da madeira atendam a um padrão de qualidade que máquinas não conseguem replicar.
                     </p>
                     
@@ -181,9 +186,9 @@
         </div>
     </section>
 
-    <section id="servicos" class="py-24 bg-zinc-900 border-y border-white/5">
+    <section id="servicos" class="py-16 md:py-24 bg-zinc-900 border-y border-white/5 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16" data-aos="fade-up">
+            <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
                 <span class="text-gold-400 uppercase tracking-widest text-xs font-bold">O Que Fazemos</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-white mt-3">Soluções em Metal e Madeira</h2>
             </div>
@@ -219,16 +224,15 @@
         </div>
     </section>
 
-    <section class="py-24 bg-zinc-950 relative overflow-hidden">
+    <section class="py-16 md:py-24 bg-zinc-950 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-64 h-64 bg-gold-400/5 rounded-full blur-3xl"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                
                 <div data-aos="fade-right">
                     <span class="text-gold-400 uppercase tracking-widest text-xs font-bold">Processo Simplificado</span>
                     <h2 class="text-3xl md:text-5xl font-serif text-white mt-4 mb-8">Personalização sem Burocracia.</h2>
-                    <p class="text-gray-400 mb-8 text-lg">
+                    <p class="text-gray-400 mb-8 text-base md:text-lg">
                         Nosso modelo é focado em agilidade. Você imagina e mede, nós criamos e entregamos pronto.
                     </p>
                     
@@ -257,18 +261,17 @@
                     </ul>
                 </div>
 
-                <div class="relative h-full min-h-[400px]" data-aos="fade-left">
+                <div class="relative h-full min-h-[300px] md:min-h-[400px]" data-aos="fade-left">
                     <img src="img/bistro.jpg" alt="Projeto detalhado" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-700 rounded-sm">
                     <div class="absolute bottom-10 -left-10 bg-zinc-900 p-6 border-l-4 border-gold-400 shadow-xl hidden md:block">
                         <p class="text-white font-serif italic">"Design é inteligência visível."</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <section id="portfolio" class="py-24 bg-zinc-900">
+    <section id="portfolio" class="py-16 md:py-24 bg-zinc-900 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-end mb-12">
                 <div>
@@ -282,7 +285,6 @@
 
             <div class="swiper mySwiper w-full h-full pb-12" data-aos="fade-up">
                 <div class="swiper-wrapper">
-                    
                     <div class="swiper-slide h-auto">
                         <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
                             <img src="img/5.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Estante Industrial" onclick="openModal(this.src)">
@@ -292,7 +294,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="swiper-slide h-auto">
                         <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
                             <img src="img/ex2.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial" onclick="openModal(this.src)">
@@ -302,7 +303,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="swiper-slide h-auto">
                         <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
                             <img src="img/ex3.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial" onclick="openModal(this.src)">
@@ -312,7 +312,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="swiper-slide h-auto">
                         <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
                             <img src="img/ex1.webp" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial" onclick="openModal(this.src)">
@@ -322,54 +321,49 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="swiper-slide h-auto">
+                     <div class="swiper-slide h-auto">
                         <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
                             <img src="img/7.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Mesa de Centro" onclick="openModal(this.src)">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6 pointer-events-none">
                                 <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
-                                <h3 class="text-white font-serif text-xl">Bancos e mesa de área externa</h3>
+                                <h3 class="text-white font-serif text-xl">Bancos e mesa</h3>
                             </div>
                         </div>
                     </div>
-
                      <div class="swiper-slide h-auto">
                         <div class="group relative overflow-hidden aspect-[3/4] h-full w-full cursor-pointer">
                             <img src="img/6.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Arara de Roupas" onclick="openModal(this.src)">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6 pointer-events-none">
                                 <span class="text-gold-400 text-xs uppercase tracking-widest">Comercial</span>
-                                <h3 class="text-white font-serif text-xl">Banco geométrico personalizado</h3>
+                                <h3 class="text-white font-serif text-xl">Banco geométrico</h3>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
             
             <div class="text-center mt-2 md:hidden">
-                <a href="https://instagram.com" class="text-gold-400 border-b border-gold-400 pb-1 text-sm uppercase tracking-widest">Ver Instagram</a>
+                <a href="https://instagram.com/aco_fino" class="text-gold-400 border-b border-gold-400 pb-1 text-sm uppercase tracking-widest">Ver Instagram</a>
             </div>
         </div>
     </section>
 
-    <section id="contato" class="py-24 bg-zinc-950 border-t border-white/10">
+    <section id="contato" class="py-16 md:py-24 bg-zinc-950 border-t border-white/10 overflow-hidden">
         <div class="max-w-4xl mx-auto px-4 text-center" data-aos="zoom-in">
-            <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Pronto para transformar<br>seu ambiente?</h2>
-            <p class="text-gray-400 mb-10 text-lg">A agenda para projetos exclusivos é limitada. Entre em contato hoje para garantir sua produção.</p>
+            <h2 class="text-3xl md:text-5xl font-serif text-white mb-6">Pronto para transformar<br>seu ambiente?</h2>
+            <p class="text-gray-400 mb-10 text-base md:text-lg">A agenda para projetos exclusivos é limitada. Entre em contato hoje para garantir sua produção.</p>
             
-            <a href="https://api.whatsapp.com/send?phone=5548984752196&text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento!" class="inline-flex items-center gap-3 bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-none uppercase tracking-widest font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-green-900/20">
+            <a href="https://api.whatsapp.com/send?phone=5548984752196&text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento!" class="inline-flex items-center gap-3 bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-none uppercase tracking-widest font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-green-900/20 text-sm md:text-base">
                 <i class="ph ph-whatsapp-logo text-2xl"></i>
                 Falar no WhatsApp
             </a>
             
             <div class="mt-16 flex justify-center gap-8 text-gray-500">
                 <a href="https://www.instagram.com/aco_fino/" class="hover:text-gold-400 transition-colors"><i class="ph ph-instagram-logo text-2xl"></i></a>
-                <a href="mailto:acofinomoveis@gmail.com"
-   class="hover:text-gold-400 transition-colors">
-    <i class="ph ph-envelope-simple text-2xl"></i>
-</a>
-
+                <a href="mailto:acofinomoveis@gmail.com" class="hover:text-gold-400 transition-colors">
+                    <i class="ph ph-envelope-simple text-2xl"></i>
+                </a>
             </div>
             
             <p class="mt-8 text-gray-700 text-xs uppercase tracking-widest">
@@ -380,19 +374,20 @@
     </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> <script>
-        // Inicializa AOS (Animações)
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> 
+    
+    <script>
         AOS.init({
             once: true,
             offset: 100,
             duration: 800,
+            overflow: 'hidden' /* Garante que animação não gere scroll */
         });
 
-        // Inicializa Swiper (Carrossel)
         var swiper = new Swiper(".mySwiper", {
-            slidesPerView: 1, // Mostra 1 item no celular
-            spaceBetween: 20, // Espaço entre os itens
-            loop: true, // Loop infinito
+            slidesPerView: 1, 
+            spaceBetween: 20, 
+            loop: true, 
             autoplay: {
                 delay: 3000,
                 disableOnInteraction: false,
@@ -403,23 +398,21 @@
             },
             breakpoints: {
                 640: {
-                    slidesPerView: 2, // Mostra 2 itens em tablets
+                    slidesPerView: 2, 
                     spaceBetween: 20,
                 },
                 1024: {
-                    slidesPerView: 3, // Mostra 3 itens em desktop
+                    slidesPerView: 3, 
                     spaceBetween: 30,
                 },
             },
         });
 
-        // Toggle Menu Mobile
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
-        // Efeito Blur na Navbar
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -431,23 +424,18 @@
             }
         });
 
-        // --- FUNÇÕES DA LIGHTBOX (GALERIA) ---
         function openModal(imageSrc) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImg');
             
             modalImg.src = imageSrc;
             modal.classList.remove('hidden');
-            
-            // Trava o scroll da página atrás do modal
             document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
             const modal = document.getElementById('imageModal');
             modal.classList.add('hidden');
-            
-            // Libera o scroll da página
             document.body.style.overflow = 'auto';
         }
     </script>
