@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aço Fino | Design Industrial de Alto Padrão</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#D4AF37', // Dourado Clássico
+                            500: '#C5A028',
+                            600: '#B08D20',
+                        },
+                        zinc: {
+                            850: '#1f1f22', // Cinza Premium
+                            950: '#0c0c0c', // Quase preto
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Ajustes finos */
+        body { background-color: #0c0c0c; color: #f3f4f6; }
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(12,12,12,1)), url('img/back-hero.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #D4AF37, #fef3c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Estilização dos Pontos do Carrossel (Paginação) */
+        .swiper-pagination-bullet {
+            background-color: #ffffff;
+            opacity: 0.3;
+            width: 10px;
+            height: 10px;
+        }
+        .swiper-pagination-bullet-active {
+            background-color: #D4AF37 !important; /* Dourado */
+            opacity: 1;
+            width: 12px;
+            height: 12px;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-zinc-950/80 backdrop-blur-md border-b border-white/5" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 cursor-pointer flex items-center">
+                    <img src="img/logo-site.png" alt="Logo Aço Fino" class="h-12 w-auto object-contain">
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#sobre" class="hover:text-gold-400 transition-colors px-3 py-2 text-sm uppercase tracking-widest">Sobre</a>
+                        <a href="#servicos" class="hover:text-gold-400 transition-colors px-3 py-2 text-sm uppercase tracking-widest">Serviços</a>
+                        <a href="#portfolio" class="hover:text-gold-400 transition-colors px-3 py-2 text-sm uppercase tracking-widest">Portfólio</a>
+                        <a href="#contato" class="bg-gold-400 text-zinc-950 hover:bg-white hover:text-black px-6 py-2 rounded-none font-bold uppercase text-xs tracking-widest transition-all transform hover:-translate-y-1">
+                            Orçamento
+                        </a>
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="toggleMenu()" class="text-gray-400 hover:text-white focus:outline-none p-2">
+                        <i class="ph ph-list text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="md:hidden hidden bg-zinc-900 border-t border-zinc-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#sobre" class="text-gray-300 hover:text-gold-400 block px-3 py-2 text-base font-medium">Sobre</a>
+                <a href="#servicos" class="text-gray-300 hover:text-gold-400 block px-3 py-2 text-base font-medium">Serviços</a>
+                <a href="#portfolio" class="text-gray-300 hover:text-gold-400 block px-3 py-2 text-base font-medium">Portfólio</a>
+                <a href="#contato" class="text-gold-400 font-bold block px-3 py-2 text-base">Solicitar Orçamento</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-screen flex items-center justify-center hero-bg">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
+            <p class="text-gold-400 uppercase tracking-[0.3em] text-sm mb-4 font-bold">Mobiliário Industrial de Alto Padrão</p>
+            <h1 class="text-5xl md:text-7xl font-serif font-medium text-white mb-6 leading-tight">
+                A robustez do aço.<br>
+                A delicadeza do <span class="italic text-gold-400">fino</span>.
+            </h1>
+            <p class="text-gray-300 text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto">
+                Transformamos metal bruto e madeira nobre em identidade visual para sua casa ou negócio. Peças exclusivas, feitas à mão.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#contato" class="bg-gold-400 text-zinc-950 px-8 py-4 uppercase tracking-widest font-bold hover:bg-white transition-all w-full md:w-auto">
+                    Quero um Projeto Exclusivo
+                </a>
+                <a href="#portfolio" class="border border-white/30 text-white px-8 py-4 uppercase tracking-widest hover:bg-white hover:text-black transition-all w-full md:w-auto">
+                    Ver Galeria
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
+            <i class="ph ph-arrow-down text-2xl"></i>
+        </div>
+    </header>
+
+    <section id="sobre" class="py-24 bg-zinc-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div data-aos="fade-right">
+                    <div class="relative group">
+                        <div class="absolute -inset-2 bg-gold-400/20 blur-lg group-hover:bg-gold-400/30 transition duration-500"></div>
+                        <img src="img/5.jpg" alt="Artesão trabalhando com solda" class="relative w-full h-[500px] object-cover grayscale hover:grayscale-0 transition duration-700 shadow-2xl">
+                        <div class="absolute bottom-0 left-0 p-6 bg-black/60 backdrop-blur-sm w-full">
+                            <p class="text-gold-400 text-xs tracking-widest uppercase">Mestre Artesão</p>
+                            <p class="text-white font-serif text-xl">Rhafael Rachadel</p>
+                        </div>
+                    </div>
+                </div>
+                <div data-aos="fade-left">
+                    <h2 class="text-4xl font-serif text-white mb-6">A Arte de Fazer Bem Feito.</h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Em um mundo de produções em massa, escolhemos o caminho da excelência artesanal. Na <strong>Aço Fino</strong>, acreditamos que uma solda não deve apenas unir peças, ela deve ser invisível ao toque e agradável ao olhar.
+                    </p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        Cada peça que sai do nosso estúdio é projetada e executada pessoalmente, garantindo que o acabamento, a pintura epóxi e o tratamento da madeira atendam a um padrão de qualidade que máquinas não conseguem replicar.
+                    </p>
+                    
+                    <div class="flex items-center gap-8 border-t border-white/10 pt-8">
+                        <div>
+                            <span class="block text-3xl font-serif text-gold-400">+20</span>
+                            <span class="text-xs uppercase tracking-wider text-gray-500">Anos de Experiência</span>
+                        </div>
+                        <div>
+                            <span class="block text-3xl font-serif text-gold-400">100%</span>
+                            <span class="text-xs uppercase tracking-wider text-gray-500">Feito à Mão</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicos" class="py-24 bg-zinc-900 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-gold-400 uppercase tracking-widest text-xs font-bold">O Que Fazemos</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-white mt-3">Soluções em Metal e Madeira</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="group bg-zinc-950 p-8 border border-white/5 hover:border-gold-400/50 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <i class="ph ph-house-line text-4xl text-gold-400 mb-6"></i>
+                    <h3 class="text-xl font-serif text-white mb-4">Residencial Premium</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        Mesas de jantar, aparadores, estantes e adegas que se tornam o centro das atenções. Design atemporal que dura gerações.
+                    </p>
+                    <a href="#contato" class="text-white text-xs uppercase tracking-widest hover:text-gold-400 border-b border-transparent hover:border-gold-400 pb-1 transition-all">Ver Projetos</a>
+                </div>
+
+                <div class="group bg-zinc-950 p-8 border border-white/5 hover:border-gold-400/50 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <i class="ph ph-storefront text-4xl text-gold-400 mb-6"></i>
+                    <h3 class="text-xl font-serif text-white mb-4">Comercial & Showroom</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        Araras, expositores e balcões no estilo industrial. Dê à sua loja uma estética moderna e robusta que valoriza o seu produto.
+                    </p>
+                    <a href="#contato" class="text-white text-xs uppercase tracking-widest hover:text-gold-400 border-b border-transparent hover:border-gold-400 pb-1 transition-all">Ver Projetos</a>
+                </div>
+
+                <div class="group bg-zinc-950 p-8 border border-white/5 hover:border-gold-400/50 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                    <i class="ph ph-ruler-pencil text-4xl text-gold-400 mb-6"></i>
+                    <h3 class="text-xl font-serif text-white mb-4">Projetos Sob Medida</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        Executamos seu desenho ou projeto de arquiteto com precisão milimétrica. Personalização total de medidas e acabamentos.
+                    </p>
+                    <a href="#contato" class="text-white text-xs uppercase tracking-widest hover:text-gold-400 border-b border-transparent hover:border-gold-400 pb-1 transition-all">Ver Projetos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-zinc-950 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-gold-400/5 rounded-full blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <div data-aos="fade-right">
+                    <span class="text-gold-400 uppercase tracking-widest text-xs font-bold">Processo Simplificado</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-white mt-4 mb-8">Personalização sem Burocracia.</h2>
+                    <p class="text-gray-400 mb-8 text-lg">
+                        Nosso modelo é focado em agilidade. Você imagina e mede, nós criamos e entregamos pronto.
+                    </p>
+                    
+                    <ul class="space-y-8">
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-zinc-900 border border-gold-400/30 text-gold-400 flex items-center justify-center font-serif text-xl">1</span>
+                            <div class="ml-6">
+                                <h4 class="text-white font-medium mb-2">Envie a Inspiração</h4>
+                                <p class="text-gray-500 text-sm">Mande uma foto, um desenho ou referência do Pinterest pelo WhatsApp.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-zinc-900 border border-gold-400/30 text-gold-400 flex items-center justify-center font-serif text-xl">2</span>
+                            <div class="ml-6">
+                                <h4 class="text-white font-medium mb-2">Você no Comando das Medidas</h4>
+                                <p class="text-gray-500 text-sm">Para garantir o melhor preço e rapidez, <strong>não realizamos visitas técnicas</strong>. Você nos envia Altura x Largura x Profundidade e nós fabricamos exatamente assim.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-zinc-900 border border-gold-400/30 text-gold-400 flex items-center justify-center font-serif text-xl">3</span>
+                            <div class="ml-6">
+                                <h4 class="text-white font-medium mb-2">Entrega Pronta</h4>
+                                <p class="text-gray-500 text-sm">Receba seu móvel pronto ou com montagem simplificada, sem necessidade de equipe especializada.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="relative h-full min-h-[400px]" data-aos="fade-left">
+                    <img src="img/bistro.jpg" alt="Projeto detalhado" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-700 rounded-sm">
+                    <div class="absolute bottom-10 -left-10 bg-zinc-900 p-6 border-l-4 border-gold-400 shadow-xl hidden md:block">
+                        <p class="text-white font-serif italic">"Design é inteligência visível."</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-24 bg-zinc-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <span class="text-gold-400 uppercase tracking-widest text-xs font-bold">Galeria</span>
+                    <h2 class="text-3xl md:text-4xl font-serif text-white mt-3">Projetos Recentes</h2>
+                </div>
+                <div class="flex gap-2">
+                    <span class="text-gray-500 text-xs hidden md:block uppercase tracking-wider">Arraste para ver mais <i class="ph ph-hand-swipe-right ml-1"></i></span>
+                </div>
+            </div>
+
+            <div class="swiper mySwiper w-full h-full pb-12" data-aos="fade-up">
+                <div class="swiper-wrapper">
+                    
+                    <div class="swiper-slide h-auto">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
+                            <img src="img/5.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Estante Industrial">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                                <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
+                                <h3 class="text-white font-serif text-xl">Bar espelhado</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide h-auto">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
+                            <img src="img/ex2.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                                <span class="text-gold-400 text-xs uppercase tracking-widest">Comercial</span>
+                                <h3 class="text-white font-serif text-xl">Estrutura de bar</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide h-auto">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
+                            <img src="img/ex3.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                                <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
+                                <h3 class="text-white font-serif text-xl">Canto Alemão</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide h-auto">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
+                            <img src="img/ex1.webp" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Móvel Industrial">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                                <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
+                                <h3 class="text-white font-serif text-xl">Bancada funcional</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide h-auto">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
+                            <img src="img/7.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Mesa de Centro">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                                <span class="text-gold-400 text-xs uppercase tracking-widest">Residencial</span>
+                                <h3 class="text-white font-serif text-xl">Bancos e mesa de área externa</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="swiper-slide h-auto">
+                        <div class="group relative overflow-hidden aspect-[3/4] h-full w-full">
+                            <img src="img/6.jpg" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Arara de Roupas">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
+                                <span class="text-gold-400 text-xs uppercase tracking-widest">Comercial</span>
+                                <h3 class="text-white font-serif text-xl">Banco geométrico personalizado</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+            
+            <div class="text-center mt-2 md:hidden">
+                <a href="https://instagram.com" class="text-gold-400 border-b border-gold-400 pb-1 text-sm uppercase tracking-widest">Ver Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="py-24 bg-zinc-950 border-t border-white/10">
+        <div class="max-w-4xl mx-auto px-4 text-center" data-aos="zoom-in">
+            <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Pronto para transformar<br>seu ambiente?</h2>
+            <p class="text-gray-400 mb-10 text-lg">A agenda para projetos exclusivos é limitada. Entre em contato hoje para garantir sua produção.</p>
+            
+            <a href="https://api.whatsapp.com/send?phone=5548984752196&text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento!" class="inline-flex items-center gap-3 bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-none uppercase tracking-widest font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-green-900/20">
+                <i class="ph ph-whatsapp-logo text-2xl"></i>
+                Falar no WhatsApp
+            </a>
+            
+            <div class="mt-16 flex justify-center gap-8 text-gray-500">
+                <a href="https://www.instagram.com/aco_fino/" class="hover:text-gold-400 transition-colors"><i class="ph ph-instagram-logo text-2xl"></i></a>
+                <a href="mailto:acofinomoveis@gmail.com"
+   class="hover:text-gold-400 transition-colors">
+    <i class="ph ph-envelope-simple text-2xl"></i>
+</a>
+
+            </div>
+            
+            <p class="mt-8 text-gray-700 text-xs uppercase tracking-widest">
+                &copy; 2026 Aço Fino. Todos os direitos reservados.<br>
+                Palhoça, SC.
+            </p>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> <script>
+        // Inicializa AOS (Animações)
+        AOS.init({
+            once: true,
+            offset: 100,
+            duration: 800,
+        });
+
+        // Inicializa Swiper (Carrossel)
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1, // Mostra 1 item no celular
+            spaceBetween: 20, // Espaço entre os itens
+            loop: true, // Loop infinito
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2, // Mostra 2 itens em tablets
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 3, // Mostra 3 itens em desktop
+                    spaceBetween: 30,
+                },
+            },
+        });
+
+        // Toggle Menu Mobile
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Efeito Blur na Navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg', 'bg-zinc-950/95');
+                navbar.classList.remove('bg-zinc-950/80');
+            } else {
+                navbar.classList.remove('shadow-lg', 'bg-zinc-950/95');
+                navbar.classList.add('bg-zinc-950/80');
+            }
+        });
+    </script>
+    <script src="https://whatsa.me/bt-min.js?link=https://whatsa.me/5548984752196/?t=Gostaria%20de%20conhecer%20seu%20trabalho!"></script>
+</body>
+</html>
