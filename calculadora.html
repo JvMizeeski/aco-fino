@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calculadora de Orçamento | Aço Fino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gold: { 400: '#D4AF37', 500: '#C5A028' }, zinc: { 850: '#1f1f22', 950: '#0c0c0c' } },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Impede o zoom automático no iOS quando foca em inputs */
+        input { font-size: 16px !important; }
+        
+        /* Estilo da barra de rolagem customizada pro dropdown */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1f1f22; }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-zinc-950 text-gray-300 font-sans antialiased min-h-screen flex flex-col selection:bg-gold-400 selection:text-black">
+
+    <div class="max-w-3xl w-full mx-auto bg-zinc-900 border-x border-white/5 flex-1 flex flex-col shadow-2xl relative pb-20">
+        
+        <div class="bg-black/80 backdrop-blur-md p-5 border-b border-white/10 flex items-center justify-between sticky top-0 z-40">
+            <div>
+                <h1 class="text-xl md:text-2xl font-serif text-white">Calculadora <span class="text-gold-400 italic">Fina</span></h1>
+                <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest mt-1">Orçamento de Produção</p>
+            </div>
+            <i class="ph ph-calculator text-3xl text-gold-400"></i>
+        </div>
+
+        <div class="p-4 md:p-8 flex-1 flex flex-col gap-6">
+            
+            <div class="bg-zinc-950 p-4 border border-white/5 rounded-md">
+                <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="ph ph-magnifying-glass"></i> 1. Buscar Material
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="relative">
+                        <label class="block text-xs text-gray-400 mb-1">Digite o nome do ferro (ex: Tubo 20x20)</label>
+                        <div class="relative">
+                            <input type="text" id="input-busca" placeholder="Buscar material..." onkeyup="filtrarMateriais()" autocomplete="off" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 pl-10 focus:outline-none focus:border-gold-400 transition-colors">
+                            <i class="ph ph-magnifying-glass absolute left-3 top-3.5 text-gray-400 text-lg"></i>
+                        </div>
+                        <ul id="dropdown-materiais" class="absolute z-50 w-full bg-zinc-800 border border-zinc-700 mt-1 max-h-60 overflow-y-auto rounded-md shadow-2xl hidden">
+                            </ul>
+                    </div>
+                    
+                    <div class="flex gap-3 items-end">
+                        <div class="w-1/2">
+                            <label class="block text-xs text-gray-400 mb-1">Metros Usados</label>
+                            <input type="number" id="input-metros" step="0.1" placeholder="Ex: 2.5" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 transition-colors">
+                        </div>
+                        <div class="w-1/2">
+                            <button onclick="adicionarMaterial()" class="w-full h-[50px] bg-zinc-800 border border-gold-400/30 hover:bg-gold-400 hover:text-black text-gold-400 text-xs font-bold uppercase tracking-wider rounded-md transition-colors flex justify-center items-center gap-1">
+                                <i class="ph ph-plus-circle text-lg"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xs font-bold text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-2">Materiais na Peça</h2>
+                <div id="lista-materiais" class="space-y-2 min-h-[80px]">
+                    <p class="text-xs text-gray-600 italic py-2">Nenhum material adicionado ainda.</p>
+                </div>
+            </div>
+
+            <div class="bg-zinc-950 p-4 border border-white/5 rounded-md mt-2">
+                <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="ph ph-paint-roller"></i> 2. Acabamento & Solda
+                </h2>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">Qtd. Soldas</label>
+                        <input type="number" id="qtd-soldas" value="0" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 text-center focus:outline-none focus:border-gold-400">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">Valor p/ Solda (R$)</label>
+                        <input type="number" id="valor-solda" value="15.00" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 text-center focus:outline-none focus:border-gold-400">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">Metros Pintura</label>
+                        <input type="number" id="qtd-pintura" value="0" step="0.1" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 text-center focus:outline-none focus:border-gold-400">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">M² Pintura (R$)</label>
+                        <input type="number" id="valor-pintura" value="8.00" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 text-center focus:outline-none focus:border-gold-400">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-zinc-950 border-t border-gold-400/30 p-4 fixed bottom-0 w-full max-w-3xl z-50">
+            <div class="flex justify-between items-center mb-2">
+                <div class="text-xs text-gray-400">
+                    Ferro: <span id="resumo-ferro" class="text-white ml-1 font-mono">R$ 0,00</span>
+                </div>
+                <div class="text-xs text-gray-400">
+                    Serviços: <span id="resumo-servico" class="text-white ml-1 font-mono">R$ 0,00</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-end">
+                <div>
+                    <span class="block text-[10px] uppercase tracking-widest text-gold-400">Preço Sugerido</span>
+                    <span id="preco-final" class="text-3xl font-serif text-white font-bold leading-none">R$ 0,00</span>
+                </div>
+                <button onclick="limparTudo()" class="text-xs bg-red-900/30 text-red-400 px-4 py-2 rounded-md hover:bg-red-900/50 transition-colors">
+                    Limpar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Banco de Dados Completo (81 itens) retirado do orçamento TUBOAÇO
+        const dbMateriais = [
+            // TUBOS QUADRADOS GALVANIZADOS
+            { nome: "Tubo Quadrado Galv. 15 X 15 1.25MM(18)", precoBarra: 35.99 },
+            { nome: "Tubo Quadrado Galv. 20 X 20 0.95MM(20)", precoBarra: 40.99 },
+            { nome: "Tubo Quadrado Galv. 20 X 20 1.25MM(18)", precoBarra: 50.20 },
+            { nome: "Tubo Quadrado Galv. 20 X 20 1.55MM(16)", precoBarra: 59.26 },
+            { nome: "Tubo Quadrado Galv. 25 X 25 0.95MM(20)", precoBarra: 55.00 },
+            { nome: "Tubo Quadrado Galv. 25 X 25 1.25MM(18)", precoBarra: 63.20 },
+            { nome: "Tubo Quadrado Galv. 25 X 25 1.55MM(16)", precoBarra: 77.25 },
+            { nome: "Tubo Quadrado Galv. 30 X 30 0.95MM(20)", precoBarra: 62.60 },
+            { nome: "Tubo Quadrado Galv. 30 X 30 1.25MM(18)", precoBarra: 77.68 },
+            { nome: "Tubo Quadrado Galv. 30 X 30 1.55MM(16)", precoBarra: 91.99 },
+            { nome: "Tubo Quadrado Galv. 40 X 40 1.25MM(18)", precoBarra: 104.90 },
+            { nome: "Tubo Quadrado Galv. 40 X 40 1.55MM(16)", precoBarra: 128.00 },
+            { nome: "Tubo Quadrado Galv. 50 X 50 1.25MM(18)", precoBarra: 129.99 },
+            { nome: "Tubo Quadrado Galv. 50 X 50 1.55MM(16)", precoBarra: 158.30 },
+
+            // TUBOS RETANGULARES GALVANIZADOS
+            { nome: "Tubo Retangular Galv. 20 X 30 0.95MM(20)", precoBarra: 50.40 },
+            { nome: "Tubo Retangular Galv. 20 X 30 1.25MM(18)", precoBarra: 62.99 },
+            { nome: "Tubo Retangular Galv. 20 X 30 1.55MM(16)", precoBarra: 76.91 },
+            { nome: "Tubo Retangular Galv. 20 X 40 0.95MM(20)", precoBarra: 63.29 },
+            { nome: "Tubo Retangular Galv. 20 X 40 1.25MM(18)", precoBarra: 76.30 },
+            { nome: "Tubo Retangular Galv. 20 X 40 1.55MM(16)", precoBarra: 93.30 },
+            { nome: "Tubo Retangular Galv. 20 X 50 1.25MM(18)", precoBarra: 95.30 },
+            { nome: "Tubo Retangular Galv. 20 X 50 1.55MM(16)", precoBarra: 104.50 },
+            { nome: "Tubo Retangular Galv. 30 X 40 0.95MM(20)", precoBarra: 70.55 },
+            { nome: "Tubo Retangular Galv. 30 X 40 1.25MM(18)", precoBarra: 90.90 },
+            { nome: "Tubo Retangular Galv. 30 X 40 1.55MM(16)", precoBarra: 108.99 },
+            { nome: "Tubo Retangular Galv. 30 X 50 0.95MM(20)", precoBarra: 86.60 },
+            { nome: "Tubo Retangular Galv. 30 X 50 1.25MM(18)", precoBarra: 96.30 },
+            { nome: "Tubo Retangular Galv. 30 X 50 1.55MM(16)", precoBarra: 125.99 },
+
+            // TUBOS REDONDOS INDUSTRIAIS GALVANIZADOS
+            { nome: "Tubo Redondo Ind. Galv. 5/8 X 0.95MM(20)", precoBarra: 25.60 },
+            { nome: "Tubo Redondo Ind. Galv. 5/8 X 1.25MM(18)", precoBarra: 35.99 },
+            { nome: "Tubo Redondo Ind. Galv. 3/4 X 1.25MM(18)", precoBarra: 37.20 },
+            { nome: "Tubo Redondo Ind. Galv. 3/4 X 1.55MM(16)", precoBarra: 45.99 },
+            { nome: "Tubo Redondo Ind. Galv. 7/8 X 1.25MM(18)", precoBarra: 44.30 },
+            { nome: "Tubo Redondo Ind. Galv. 7/8 X 1.55MM(16)", precoBarra: 49.50 },
+            { nome: "Tubo Redondo Ind. Galv. 1POL X 1.25MM(18)", precoBarra: 49.95 },
+            { nome: "Tubo Redondo Ind. Galv. 1POL X 1.55MM(16)", precoBarra: 62.49 },
+            { nome: "Tubo Redondo Ind. Galv. 1.1/4 X 1.25MM(18)", precoBarra: 65.99 },
+            { nome: "Tubo Redondo Ind. Galv. 1.1/4 X 1.55MM(16)", precoBarra: 78.30 },
+            { nome: "Tubo Redondo Ind. Galv. 1.1/2 X 1.25MM(18)", precoBarra: 74.99 },
+            { nome: "Tubo Redondo Ind. Galv. 1.1/2 X 1.55MM(16)", precoBarra: 96.30 },
+            { nome: "Tubo Redondo Ind. Galv. 2POL X 1.25MM(18)", precoBarra: 99.99 },
+            { nome: "Tubo Redondo Ind. Galv. 2POL X 1.55MM(16)", precoBarra: 123.99 },
+
+            // FERROS REDONDOS E QUADRADOS ZINCADOS
+            { nome: "Ferro Redondo Zincado 1/4", precoBarra: 18.90 },
+            { nome: "Ferro Redondo Zincado 5/16", precoBarra: 27.90 },
+            { nome: "Ferro Redondo Zincado 3/8", precoBarra: 41.90 },
+            { nome: "Ferro Redondo Zincado 1/2", precoBarra: 69.89 },
+            { nome: "Ferro Quadrado Zincado 5/16", precoBarra: 40.65 },
+            { nome: "Ferro Quadrado Zincado 1/2", precoBarra: 100.95 },
+
+            // FERROS CHATOS ZINCADOS
+            { nome: "Ferro Chato Zincado 3/8 X 1/8", precoBarra: 17.35 },
+            { nome: "Ferro Chato Zincado 1/2 X 1/8", precoBarra: 25.09 },
+            { nome: "Ferro Chato Zincado 1/2 X 3/16", precoBarra: 33.98 },
+            { nome: "Ferro Chato Zincado 5/8 X 1/8", precoBarra: 28.92 },
+            { nome: "Ferro Chato Zincado 5/8 X 3/16", precoBarra: 42.70 },
+            { nome: "Ferro Chato Zincado 3/4 X 1/8", precoBarra: 34.70 },
+            { nome: "Ferro Chato Zincado 3/4 X 3/16", precoBarra: 51.39 },
+            { nome: "Ferro Chato Zincado 7/8 X 1/8", precoBarra: 39.80 },
+            { nome: "Ferro Chato Zincado 7/8 X 3/16", precoBarra: 60.00 },
+            { nome: "Ferro Chato Zincado 1 X 1/8", precoBarra: 45.99 },
+            { nome: "Ferro Chato Zincado 1 X 3/16", precoBarra: 68.68 },
+            { nome: "Ferro Chato Zincado 1 X 1/4", precoBarra: 90.86 },
+            { nome: "Ferro Chato Zincado 1.1/4 X 1/8", precoBarra: 57.99 },
+            { nome: "Ferro Chato Zincado 1.1/4 X 3/16", precoBarra: 86.60 },
+            { nome: "Ferro Chato Zincado 1.1/4 X 1/4", precoBarra: 114.90 },
+            { nome: "Ferro Chato Zincado 1.1/2 X 1/8", precoBarra: 77.85 },
+            { nome: "Ferro Chato Zincado 1.1/2 X 3/16", precoBarra: 102.91 },
+            { nome: "Ferro Chato Zincado 1.1/2 X 1/4", precoBarra: 137.37 },
+            { nome: "Ferro Chato Zincado 2 X 1/8", precoBarra: 91.82 },
+            { nome: "Ferro Chato Zincado 2 X 3/16", precoBarra: 137.37 },
+            { nome: "Ferro Chato Zincado 2 X 1/4", precoBarra: 182.99 },
+
+            // CANTONEIRAS ZINCADAS
+            { nome: "Cantoneira Zincada 1/2 X 1/8", precoBarra: 39.99 },
+            { nome: "Cantoneira Zincada 3/4 X 1/8", precoBarra: 63.90 },
+            { nome: "Cantoneira Zincada 7/8 X 1/8", precoBarra: 75.99 },
+            { nome: "Cantoneira Zincada 1 X 1/8", precoBarra: 86.50 },
+            { nome: "Cantoneira Zincada 1 X 3/16", precoBarra: 125.75 },
+            { nome: "Cantoneira Zincada 1.1/4 X 1/8", precoBarra: 109.20 },
+            { nome: "Cantoneira Zincada 1.1/4 X 3/16", precoBarra: 159.99 },
+            { nome: "Cantoneira Zincada 1.1/4 X 1/4", precoBarra: 208.20 },
+            { nome: "Cantoneira Zincada 1.1/2 X 3/16", precoBarra: 195.10 },
+            { nome: "Cantoneira Zincada 1.1/2 X 1/4", precoBarra: 252.95 },
+            { nome: "Cantoneira Zincada 2 X 3/16", precoBarra: 263.75 },
+            { nome: "Cantoneira Zincada 2 X 1/4", precoBarra: 345.90 }
+        ];
+
+        let materiaisAdicionados = [];
+        let materialSelecionado = null; // Armazena temporariamente o material clicado na busca
+
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // --- SISTEMA DE BUSCA (AUTOCOMPLETE) ---
+        function filtrarMateriais() {
+            const termo = document.getElementById('input-busca').value.toLowerCase();
+            const dropdown = document.getElementById('dropdown-materiais');
+            dropdown.innerHTML = '';
+            materialSelecionado = null; // Reseta se a pessoa começar a digitar de novo
+
+            if (termo.length < 1) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+
+            // Filtra os materiais onde o nome inclui o que foi digitado
+            const resultados = dbMateriais.filter(mat => mat.nome.toLowerCase().includes(termo));
+
+            if (resultados.length > 0) {
+                dropdown.classList.remove('hidden');
+                resultados.forEach((mat) => {
+                    const li = document.createElement('li');
+                    li.className = "p-3 hover:bg-zinc-700 cursor-pointer text-sm border-b border-zinc-700 flex justify-between";
+                    li.innerHTML = `<span>${mat.nome}</span> <span class="text-gold-400">R$ ${mat.precoBarra.toFixed(2)}</span>`;
+                    
+                    // Quando clica no item da lista
+                    li.onclick = () => {
+                        selecionarMaterial(mat);
+                    };
+                    dropdown.appendChild(li);
+                });
+            } else {
+                dropdown.classList.remove('hidden');
+                dropdown.innerHTML = '<li class="p-3 text-sm text-gray-500">Nenhum material encontrado.</li>';
+            }
+        }
+
+        function selecionarMaterial(mat) {
+            materialSelecionado = mat;
+            document.getElementById('input-busca').value = `${mat.nome} (R$ ${mat.precoBarra.toFixed(2)})`;
+            document.getElementById('dropdown-materiais').classList.add('hidden');
+            document.getElementById('input-metros').focus(); // Joga o foco para a quantidade de metros
+        }
+
+        // Esconde o dropdown se clicar fora
+        document.addEventListener('click', function(event) {
+            const isClickInside = document.getElementById('input-busca').contains(event.target) || document.getElementById('dropdown-materiais').contains(event.target);
+            if (!isClickInside) {
+                document.getElementById('dropdown-materiais').classList.add('hidden');
+            }
+        });
+
+        // --- LÓGICA DA CALCULADORA ---
+        function adicionarMaterial() {
+            if (!materialSelecionado) {
+                alert("Por favor, busque e selecione um material na lista.");
+                document.getElementById('input-busca').focus();
+                return;
+            }
+
+            const metros = parseFloat(document.getElementById('input-metros').value);
+
+            if (isNaN(metros) || metros <= 0) {
+                alert("Por favor, insira a quantidade de metros utilizados.");
+                return;
+            }
+
+            // Calcula: (Preço Barra / 6) * Metros
+            const custoFracionado = (materialSelecionado.precoBarra / 6) * metros;
+
+            materiaisAdicionados.push({
+                nome: materialSelecionado.nome,
+                metros: metros,
+                custo: custoFracionado
+            });
+
+            // Reseta os campos para o próximo
+            document.getElementById('input-busca').value = '';
+            document.getElementById('input-metros').value = '';
+            materialSelecionado = null;
+            
+            atualizarLista();
+            calcularTotal();
+        }
+
+        function removerMaterial(index) {
+            materiaisAdicionados.splice(index, 1);
+            atualizarLista();
+            calcularTotal();
+        }
+
+        function atualizarLista() {
+            const container = document.getElementById('lista-materiais');
+            container.innerHTML = ''; 
+
+            if (materiaisAdicionados.length === 0) {
+                container.innerHTML = '<p class="text-xs text-gray-600 italic py-2">Nenhum material adicionado ainda.</p>';
+                return;
+            }
+
+            materiaisAdicionados.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-zinc-900 rounded-md p-3 border border-white/5";
+                div.innerHTML = `
+                    <div class="pr-2">
+                        <p class="text-[11px] md:text-sm text-white leading-tight">${item.nome}</p>
+                        <p class="text-[10px] md:text-xs text-gold-400 mt-1">${item.metros} m utilizados</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs md:text-sm font-semibold font-mono">${formatarMoeda(item.custo)}</span>
+                        <button onclick="removerMaterial(${index})" class="text-red-500 hover:text-red-400 bg-red-500/10 p-2 rounded-md"><i class="ph ph-trash text-lg"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function calcularTotal() {
+            const totalFerro = materiaisAdicionados.reduce((acc, item) => acc + item.custo, 0);
+
+            const qtdPintura = parseFloat(document.getElementById('qtd-pintura').value) || 0;
+            const valorPintura = parseFloat(document.getElementById('valor-pintura').value) || 0;
+            const totalPintura = qtdPintura * valorPintura;
+
+            const qtdSoldas = parseFloat(document.getElementById('qtd-soldas').value) || 0;
+            const valorSolda = parseFloat(document.getElementById('valor-solda').value) || 0;
+            const totalMaoDeObra = qtdSoldas * valorSolda;
+
+            const totalServico = totalPintura + totalMaoDeObra;
+            const precoFinal = totalFerro + totalServico;
+
+            document.getElementById('resumo-ferro').innerText = formatarMoeda(totalFerro);
+            document.getElementById('resumo-servico').innerText = formatarMoeda(totalServico);
+            document.getElementById('preco-final').innerText = formatarMoeda(precoFinal);
+        }
+
+        function limparTudo() {
+            if(confirm("Tem certeza que deseja limpar todo o orçamento?")) {
+                materiaisAdicionados = [];
+                document.getElementById('input-busca').value = '';
+                document.getElementById('input-metros').value = '';
+                document.getElementById('qtd-soldas').value = '0';
+                document.getElementById('qtd-pintura').value = '0';
+                materialSelecionado = null;
+                atualizarLista();
+                calcularTotal();
+            }
+        }
+    </script>
+</body>
+</html>
