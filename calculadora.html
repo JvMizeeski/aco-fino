@@ -132,9 +132,23 @@
                 </div>
             </div>
 
+            <div class="bg-zinc-950 p-4 border border-white/5 rounded-md mt-2">
+                <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <i class="ph ph-shield-check"></i> 5. Margem Extra (%)
+                </h2>
+                <div class="flex items-center gap-4">
+                    <div class="w-1/3">
+                        <input type="number" id="margem-lucro" value="15" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 font-bold text-lg text-center">
+                    </div>
+                    <div class="w-2/3">
+                        <p class="text-[10px] text-gray-500 leading-tight">Cobre custos que não dão para prever ou medir (disco de corte extra, gás da solda, lixas, frete).</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-zinc-900 border border-zinc-700 rounded-md p-4 mt-2 mb-4">
                 <h2 class="text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-zinc-700 pb-2">
-                    <i class="ph ph-receipt text-gold-400"></i> 5. Detalhamento dos Custos
+                    <i class="ph ph-receipt text-gold-400"></i> 6. Detalhamento dos Custos
                 </h2>
                 <ul class="space-y-2 text-sm text-gray-400">
                     <li class="flex justify-between">
@@ -146,8 +160,12 @@
                         <span id="detalhe-pintura" class="text-white font-mono">R$ 0,00</span>
                     </li>
                     <li class="flex justify-between pt-1">
-                        <span>Custo Bruto (Sem Lucro):</span>
+                        <span>Custo Bruto (O que você gasta):</span>
                         <span id="detalhe-custo-bruto" class="text-gray-300 font-mono font-bold">R$ 0,00</span>
+                    </li>
+                    <li class="flex justify-between pt-2">
+                        <span>Margem Consumíveis (<span id="txt-porcentagem-margem">15</span>%):</span>
+                        <span id="detalhe-margem" class="text-gray-300 font-mono">R$ 0,00</span>
                     </li>
                     <li class="flex justify-between pt-2">
                         <span class="text-gold-400/80">Sua Mão de Obra e Lucro:</span>
@@ -165,10 +183,10 @@
         <div class="bg-zinc-950 border-t border-gold-400/30 p-4 fixed bottom-0 w-full max-w-3xl z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
             <div class="flex justify-between items-center mb-2">
                 <div class="text-xs text-gray-400">
-                    Custo Real: <span id="resumo-custo" class="text-white ml-1 font-mono">R$ 0,00</span>
+                    Custo Bruto: <span id="resumo-custo" class="text-white ml-1 font-mono">R$ 0,00</span>
                 </div>
                 <div class="text-xs text-gold-400/80 font-bold">
-                    Multiplicado por: <span id="resumo-multiplicador" class="ml-1 font-mono">2.5x</span>
+                    Multiplicado: <span id="resumo-multiplicador" class="ml-1 font-mono">2.5x</span>
                 </div>
             </div>
             <div class="flex justify-between items-end border-t border-white/10 pt-2">
@@ -431,7 +449,6 @@
                 const div = document.createElement('div');
                 div.className = "flex justify-between items-center bg-zinc-900 rounded-md p-3 border border-white/5";
                 
-                // Distingue visualmente um material do fornecedor de um insumo extra
                 const corIcone = item.tipo === 'extra' ? 'text-gray-400' : 'text-gold-400';
                 
                 div.innerHTML = `
@@ -457,27 +474,39 @@
             const valorPintura = parseFloat(document.getElementById('valor-pintura').value) || 0;
             const totalPintura = qtdPintura * valorPintura;
 
-            // 3. Custo Bruto (Materiais + Pintura)
+            // 3. Custo Bruto Base (Materiais + Pintura)
             const custoBruto = totalMateriais + totalPintura;
 
-            // 4. Multiplicador de Complexidade
+            // 4. Margem de Quebra/Consumíveis (Calculada sobre o custo bruto)
+            const percentualMargem = parseFloat(document.getElementById('margem-lucro').value) || 0;
+            const valorMargem = custoBruto * (percentualMargem / 100);
+
+            // 5. Custo Bruto Total (Material + Pintura + Margem Imprevistos)
+            const custoComMargem = custoBruto + valorMargem;
+
+            // 6. Multiplicador de Complexidade (Aplica o lucro de Mão de Obra)
             const multiplicador = parseFloat(document.getElementById('multiplicador').value) || 1;
             
-            // 5. Preço Final Sugerido
-            const precoFinal = custoBruto * multiplicador;
+            // 7. Preço Final Sugerido
+            // Multiplicamos o Custo Bruto pelo Fator, e então somamos a Margem Extra
+            const precoFinal = (custoBruto * multiplicador) + valorMargem;
 
-            // 6. Lucro / Mão de Obra (O que sobra pra oficina)
-            const lucroMaoDeObra = precoFinal - custoBruto;
+            // 8. Lucro / Mão de Obra Limpa
+            const lucroMaoDeObra = precoFinal - custoComMargem;
+
+            // Atualiza Textos da Tela
+            document.getElementById('txt-porcentagem-margem').innerText = percentualMargem;
 
             // Atualiza Rodapé Fixo
             document.getElementById('resumo-custo').innerText = formatarMoeda(custoBruto);
             document.getElementById('resumo-multiplicador').innerText = multiplicador + "x";
             document.getElementById('preco-final').innerText = formatarMoeda(precoFinal);
 
-            // Atualiza Detalhamento Interno (O Espelho)
+            // Atualiza Detalhamento Interno
             document.getElementById('detalhe-materiais').innerText = formatarMoeda(totalMateriais);
             document.getElementById('detalhe-pintura').innerText = formatarMoeda(totalPintura);
             document.getElementById('detalhe-custo-bruto').innerText = formatarMoeda(custoBruto);
+            document.getElementById('detalhe-margem').innerText = formatarMoeda(valorMargem);
             document.getElementById('detalhe-lucro').innerText = formatarMoeda(lucroMaoDeObra);
             document.getElementById('detalhe-total').innerText = formatarMoeda(precoFinal);
         }
@@ -491,6 +520,7 @@
                 document.getElementById('input-extra-valor').value = '';
                 document.getElementById('qtd-pintura').value = '0';
                 document.getElementById('multiplicador').value = '2.5'; 
+                document.getElementById('margem-lucro').value = '15'; 
                 document.getElementById('label-quantidade').innerText = 'Metros / Qtd.';
                 materialSelecionado = null;
                 atualizarLista();
