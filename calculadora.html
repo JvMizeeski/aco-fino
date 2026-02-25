@@ -8,8 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
     <script>
         tailwind.config = {
             theme: {
@@ -21,25 +19,75 @@
         }
     </script>
     <style>
-        /* Impede o zoom automático no iOS quando clica em inputs */
-        input, select, textarea { font-size: 16px !important; }
+        /* Impede o zoom automático no iOS quando foca em inputs */
+        input { font-size: 16px !important; }
+        
+        /* Estilo da barra de rolagem customizada pro dropdown */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1f1f22; }
         ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
-        
-        /* Oculta scroll horizontal da página */
-        body { overflow-x: hidden; width: 100%; position: relative; background-color: #0c0c0c; }
+
+        /* --- MÁGICA DA IMPRESSÃO / PDF --- */
+        @media print {
+            /* Força fundo branco e esconde tudo da calculadora */
+            body { background-color: white !important; color: black !important; }
+            #app-calculadora { display: none !important; }
+            
+            /* Mostra apenas a folha de orçamento do cliente */
+            #print-section { 
+                display: block !important; 
+                visibility: visible !important; 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 100%; 
+                margin: 0; 
+                padding: 20px; 
+            }
+        }
     </style>
 </head>
-<body class="text-gray-300 font-sans antialiased min-h-screen selection:bg-gold-400 selection:text-black">
+<body class="bg-zinc-950 text-gray-300 font-sans antialiased min-h-screen selection:bg-gold-400 selection:text-black">
 
-    <div id="loading-overlay" class="fixed inset-0 bg-zinc-950 z-[999] hidden flex-col justify-center items-center">
-        <i class="ph ph-spinner animate-spin text-5xl mb-4 text-gold-400"></i>
-        <p class="text-sm tracking-widest uppercase font-bold text-white">Gerando PDF...</p>
-        <p class="text-xs text-gray-500 mt-2 text-center px-6">Preparando o arquivo para envio. Aguarde.</p>
+    <div id="print-section" class="hidden bg-white text-black p-8 max-w-4xl mx-auto">
+        <div class="border-b-2 border-black pb-4 mb-8 flex justify-between items-end">
+            <div>
+                <img src="img/logo-orc.png" alt="Logo" style="width: 120px;">
+            </div>
+            <div class="text-right">
+                <h2 class="text-lg font-bold tracking-widest uppercase">Orçamento</h2>
+                <p class="text-sm text-gray-600" id="print-data">Data: 00/00/0000</p>
+            </div>
+        </div>
+
+        <p class="text-sm mb-6">Abaixo estão os detalhes do projeto sob medida solicitado, contemplando materiais, estrutura e acabamentos.</p>
+
+        <div class="mb-8">
+            <h3 class="text-sm font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4">Estrutura e Materiais Utilizados</h3>
+            <ul id="print-lista-materiais" class="list-disc pl-5 space-y-2 text-sm">
+                </ul>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="text-sm font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4">Serviços e Acabamentos Inclusos</h3>
+            <ul id="print-lista-servicos" class="list-disc pl-5 space-y-2 text-sm">
+                <li>Corte, esquadrejamento e montagem estrutural.</li>
+                <li>Soldagem premium e polimento de junções.</li>
+                </ul>
+        </div>
+
+        <div class="mt-12 pt-6 border-t-2 border-black flex justify-between items-center">
+            <div class="text-xs text-gray-500">
+                <p>• Orçamento válido por 7 dias.</p>
+                <p>• O prazo de produção inicia após a confirmação.</p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs uppercase tracking-widest mb-1 text-gray-600">Valor Total do Projeto</p>
+                <p class="text-3xl font-serif font-bold" id="print-total">R$ 0,00</p>
+            </div>
+        </div>
     </div>
-
-    <div id="app-calculadora" class="max-w-3xl w-full mx-auto bg-zinc-900 border-x border-white/5 flex flex-col shadow-2xl relative pb-36 min-h-screen">
+    <div id="app-calculadora" class="max-w-3xl w-full mx-auto bg-zinc-900 border-x border-white/5 flex-1 flex flex-col shadow-2xl relative pb-36">
         
         <div class="bg-black/80 backdrop-blur-md p-5 border-b border-white/10 flex items-center justify-between sticky top-0 z-40">
             <div>
@@ -146,7 +194,7 @@
                         <input type="number" id="margem-lucro" value="15" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 font-bold text-lg text-center">
                     </div>
                     <div class="w-2/3">
-                        <p class="text-[10px] text-gray-500 leading-tight">Cobre custos que não dão para prever (disco extra, gás da solda, lixas, frete).</p>
+                        <p class="text-[10px] text-gray-500 leading-tight">Cobre custos que não dão para prever ou medir (disco de corte extra, gás da solda, lixas, frete).</p>
                     </div>
                 </div>
             </div>
@@ -165,11 +213,11 @@
                         <span id="detalhe-pintura" class="text-white font-mono">R$ 0,00</span>
                     </li>
                     <li class="flex justify-between pt-1">
-                        <span>Custo Bruto (Gasto real):</span>
+                        <span>Custo Bruto (O que você gasta):</span>
                         <span id="detalhe-custo-bruto" class="text-gray-300 font-mono font-bold">R$ 0,00</span>
                     </li>
                     <li class="flex justify-between pt-2">
-                        <span>Margem Imprevistos (<span id="txt-porcentagem-margem">15</span>%):</span>
+                        <span>Margem Consumíveis (<span id="txt-porcentagem-margem">15</span>%):</span>
                         <span id="detalhe-margem" class="text-gray-300 font-mono">R$ 0,00</span>
                     </li>
                     <li class="flex justify-between pt-2">
@@ -186,9 +234,10 @@
         </div>
 
         <div class="bg-zinc-950 border-t border-gold-400/30 p-4 fixed bottom-0 w-full max-w-3xl z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+            
             <div class="flex justify-between items-center mb-3">
                 <div class="text-xs text-gray-400">
-                    Custo Bruto: <span id="resumo-custo" class="text-white ml-1 font-mono">R$ 0,00</span>
+                    Custo: <span id="resumo-custo" class="text-white ml-1 font-mono">R$ 0,00</span>
                 </div>
                 <div class="text-right">
                     <span class="block text-[10px] uppercase tracking-widest text-gold-400">Valor pro Cliente</span>
@@ -203,58 +252,17 @@
                     </button>
                 </div>
                 <div class="col-span-9">
-                    <button onclick="compartilharPDF()" class="w-full h-[40px] bg-gold-400 hover:bg-gold-500 text-black font-bold uppercase tracking-wider text-[11px] md:text-xs rounded-md transition-colors flex justify-center items-center gap-2 shadow-lg shadow-gold-400/20">
-                        <i class="ph ph-share-network text-lg"></i> Compartilhar PDF
+                    <button onclick="gerarPDF()" class="w-full h-[40px] bg-gold-400 hover:bg-gold-500 text-black font-bold uppercase tracking-wider text-xs rounded-md transition-colors flex justify-center items-center gap-2 shadow-lg shadow-gold-400/20">
+                        <i class="ph ph-file-pdf text-lg"></i> Gerar Orçamento (PDF)
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div id="print-section" class="hidden bg-white text-black p-12 w-[794px] min-h-[1122px] max-w-none mx-auto relative z-50">
-        
-        <div class="border-b-2 border-black pb-6 mb-10 flex justify-between items-end">
-            <div>
-                <img src="img/logo-orc.png" crossorigin="anonymous" alt="Aço Fino" class="h-16 w-auto object-contain mb-2">
-            </div>
-            <div class="text-right">
-                <h2 class="text-2xl font-bold tracking-widest uppercase">Orçamento</h2>
-                <p class="text-base text-gray-600 mt-1" id="print-data">Data: 00/00/0000</p>
-            </div>
-        </div>
-
-        <p class="text-lg mb-10 text-gray-800">Abaixo estão os detalhes do projeto sob medida solicitado, contemplando materiais, estrutura e acabamentos.</p>
-
-        <div class="mb-12">
-            <h3 class="text-lg font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-6 text-black">Estrutura e Materiais Utilizados</h3>
-            <ul id="print-lista-materiais" class="list-disc pl-6 space-y-4 text-base text-gray-800">
-                </ul>
-        </div>
-
-        <div class="mb-12">
-            <h3 class="text-lg font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-6 text-black">Serviços e Acabamentos Inclusos</h3>
-            <ul id="print-lista-servicos" class="list-disc pl-6 space-y-4 text-base text-gray-800">
-                <li>Corte, esquadrejamento e montagem estrutural sob medida.</li>
-                <li>Soldagem premium e polimento de junções para acabamento impecável.</li>
-                </ul>
-        </div>
-
-        <div class="mt-20 pt-8 border-t-2 border-black flex justify-between items-center bg-gray-50 px-6 py-8 rounded-lg">
-            <div class="text-sm text-gray-600 space-y-2">
-                <p>• Orçamento válido por 7 dias corridos.</p>
-                <p>• O prazo de produção inicia após a confirmação do projeto.</p>
-                <p>• Produto entregue pronto. Não inclui instalação no local.</p>
-            </div>
-            <div class="text-right">
-                <p class="text-sm uppercase tracking-widest mb-2 text-gray-500 font-bold">Investimento Total</p>
-                <p class="text-5xl font-serif font-bold text-black" id="print-total">R$ 0,00</p>
-            </div>
-        </div>
-    </div>
-
     <script>
         const dbMateriais = [
+            // TUBOS QUADRADOS GALVANIZADOS
             { nome: "Tubo Quadrado Galv. 15 X 15 1.25MM(18)", preco: 35.99 },
             { nome: "Tubo Quadrado Galv. 20 X 20 0.95MM(20)", preco: 40.99 },
             { nome: "Tubo Quadrado Galv. 20 X 20 1.25MM(18)", preco: 50.20 },
@@ -270,6 +278,7 @@
             { nome: "Tubo Quadrado Galv. 50 X 50 1.25MM(18)", preco: 129.99 },
             { nome: "Tubo Quadrado Galv. 50 X 50 1.55MM(16)", preco: 158.30 },
 
+            // TUBOS RETANGULARES GALVANIZADOS
             { nome: "Tubo Retangular Galv. 20 X 30 0.95MM(20)", preco: 50.40 },
             { nome: "Tubo Retangular Galv. 20 X 30 1.25MM(18)", preco: 62.99 },
             { nome: "Tubo Retangular Galv. 20 X 30 1.55MM(16)", preco: 76.91 },
@@ -285,6 +294,7 @@
             { nome: "Tubo Retangular Galv. 30 X 50 1.25MM(18)", preco: 96.30 },
             { nome: "Tubo Retangular Galv. 30 X 50 1.55MM(16)", preco: 125.99 },
 
+            // TUBOS REDONDOS INDUSTRIAIS GALVANIZADOS
             { nome: "Tubo Redondo Ind. Galv. 5/8 X 0.95MM(20)", preco: 25.60 },
             { nome: "Tubo Redondo Ind. Galv. 5/8 X 1.25MM(18)", preco: 35.99 },
             { nome: "Tubo Redondo Ind. Galv. 3/4 X 1.25MM(18)", preco: 37.20 },
@@ -300,6 +310,7 @@
             { nome: "Tubo Redondo Ind. Galv. 2POL X 1.25MM(18)", preco: 99.99 },
             { nome: "Tubo Redondo Ind. Galv. 2POL X 1.55MM(16)", preco: 123.99 },
 
+            // FERROS REDONDOS E QUADRADOS ZINCADOS
             { nome: "Ferro Redondo Zincado 1/4", preco: 18.90 },
             { nome: "Ferro Redondo Zincado 5/16", preco: 27.90 },
             { nome: "Ferro Redondo Zincado 3/8", preco: 41.90 },
@@ -307,6 +318,7 @@
             { nome: "Ferro Quadrado Zincado 5/16", preco: 40.65 },
             { nome: "Ferro Quadrado Zincado 1/2", preco: 100.95 },
 
+            // FERROS CHATOS ZINCADOS
             { nome: "Ferro Chato Zincado 3/8 X 1/8", preco: 17.35 },
             { nome: "Ferro Chato Zincado 1/2 X 1/8", preco: 25.09 },
             { nome: "Ferro Chato Zincado 1/2 X 3/16", preco: 33.98 },
@@ -329,6 +341,7 @@
             { nome: "Ferro Chato Zincado 2 X 3/16", preco: 137.37 },
             { nome: "Ferro Chato Zincado 2 X 1/4", preco: 182.99 },
 
+            // CANTONEIRAS ZINCADAS
             { nome: "Cantoneira Zincada 1/2 X 1/8", preco: 39.99 },
             { nome: "Cantoneira Zincada 3/4 X 1/8", preco: 63.90 },
             { nome: "Cantoneira Zincada 7/8 X 1/8", preco: 75.99 },
@@ -342,6 +355,7 @@
             { nome: "Cantoneira Zincada 2 X 3/16", preco: 263.75 },
             { nome: "Cantoneira Zincada 2 X 1/4", preco: 345.90 },
 
+            // ACESSÓRIOS E COMPLEMENTOS
             { nome: "Sapata Regulável", preco: 2.50, porUnidade: true },
             { nome: "Orelhinha (Fixação)", preco: 0.50, porUnidade: true },
             { nome: "Tampa de Tubo (Ponteira)", preco: 1.50, porUnidade: true }
@@ -396,6 +410,7 @@
                 document.getElementById('label-quantidade').innerText = 'Metros Usados';
                 document.getElementById('input-metros').placeholder = 'Ex: 2.5';
             }
+            
             document.getElementById('input-metros').focus(); 
         }
 
@@ -408,12 +423,15 @@
 
         function adicionarMaterial() {
             if (!materialSelecionado) {
-                alert("Busque e selecione um material na lista.");
+                alert("Por favor, busque e selecione um material na lista.");
+                document.getElementById('input-busca').focus();
                 return;
             }
+
             const quantidade = parseFloat(document.getElementById('input-metros').value);
+
             if (isNaN(quantidade) || quantidade <= 0) {
-                alert("Insira a quantidade utilizada.");
+                alert("Por favor, insira a quantidade utilizada.");
                 return;
             }
 
@@ -422,10 +440,10 @@
 
             if (materialSelecionado.porUnidade) {
                 custoCalculado = materialSelecionado.preco * quantidade;
-                labelUnidade = quantidade > 1 ? "unid." : "unid.";
+                labelUnidade = quantidade > 1 ? "unidades" : "unidade";
             } else {
                 custoCalculado = (materialSelecionado.preco / 6) * quantidade;
-                labelUnidade = "m";
+                labelUnidade = "metros";
             }
 
             materiaisAdicionados.push({
@@ -450,7 +468,7 @@
             const custo = parseFloat(document.getElementById('input-extra-valor').value);
 
             if (isNaN(custo) || custo <= 0) {
-                alert("Insira um valor para o insumo extra.");
+                alert("Por favor, insira um valor válido para o insumo extra.");
                 return;
             }
 
@@ -487,7 +505,9 @@
             materiaisAdicionados.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = "flex justify-between items-center bg-zinc-900 rounded-md p-3 border border-white/5";
+                
                 const corIcone = item.tipo === 'extra' ? 'text-gray-400' : 'text-gold-400';
+                
                 div.innerHTML = `
                     <div class="pr-2">
                         <p class="text-[11px] md:text-sm text-white leading-tight">${item.nome}</p>
@@ -519,6 +539,7 @@
             const multiplicador = parseFloat(document.getElementById('multiplicador').value) || 1;
             
             const precoFinal = (custoBruto * multiplicador) + valorMargem;
+
             const lucroMaoDeObra = precoFinal - custoComMargem;
 
             document.getElementById('txt-porcentagem-margem').innerText = percentualMargem;
@@ -533,98 +554,45 @@
             document.getElementById('detalhe-total').innerText = formatarMoeda(precoFinal);
         }
 
-        // ===============================================
-        // MÁGICA DO PDF CORRIGIDA (SEM CORTES NO MOBILE)
-        // ===============================================
-        async function compartilharPDF() {
+        // --- FUNÇÃO DE GERAR ORÇAMENTO PARA O CLIENTE ---
+        function gerarPDF() {
             if (materiaisAdicionados.length === 0) {
-                alert("Adicione materiais antes de gerar o orçamento.");
+                alert("Adicione pelo menos um material antes de gerar o orçamento do cliente.");
                 return;
             }
 
-            // 1. Aciona a tela de Loading
-            const loading = document.getElementById('loading-overlay');
-            loading.classList.remove('hidden');
-            loading.classList.add('flex');
+            // 1. Preenche a Data
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('print-data').innerText = `Data: ${dataAtual}`;
 
-            // 2. Preenche os dados do PDF
-            document.getElementById('print-data').innerText = `Data: ${new Date().toLocaleDateString('pt-BR')}`;
-            
+            // 2. Preenche a lista de Materiais do Cliente (SEM OS PREÇOS)
             const listaPrint = document.getElementById('print-lista-materiais');
             listaPrint.innerHTML = '';
             materiaisAdicionados.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.nome}</strong> - (${item.quantidade} ${item.labelUnidade})`;
+                // Exibe: "Tubo Quadrado 20x20 - 4 metros"
+                li.innerHTML = `<strong>${item.nome}</strong> (${item.quantidade} ${item.labelUnidade})`;
                 listaPrint.appendChild(li);
             });
 
+            // 3. Preenche a lista de Serviços do Cliente
             const servicosPrint = document.getElementById('print-lista-servicos');
             servicosPrint.innerHTML = `
-                <li>Corte, esquadrejamento e montagem estrutural sob medida.</li>
-                <li>Soldagem premium e polimento de junções para acabamento impecável.</li>
+                <li>Corte, esquadrejamento e montagem estrutural.</li>
+                <li>Soldagem premium e polimento de junções.</li>
             `;
+            
             const qtdPintura = parseFloat(document.getElementById('qtd-pintura').value) || 0;
             if (qtdPintura > 0) {
                 servicosPrint.innerHTML += `<li>Acabamento Especial: Pintura Epóxi.</li>`;
             }
 
-            document.getElementById('print-total').innerText = document.getElementById('preco-final').innerText;
+            // 4. Pega o Preço Final redondo da calculadora e joga pro PDF
+            const precoFinal = document.getElementById('preco-final').innerText;
+            document.getElementById('print-total').innerText = precoFinal;
 
-            // 3. Esconde o App e Mostra a Folha de Orçamento
-            const app = document.getElementById('app-calculadora');
-            const printSec = document.getElementById('print-section');
-            
-            app.style.display = 'none'; // Esconde a calculadora preta
-            printSec.classList.remove('hidden');
-            printSec.classList.add('block'); // Exibe a folha A4 na tela
-
-            // 4. Aguarda 800ms para o navegador "respirar" e renderizar a logo
-            setTimeout(async () => {
-                try {
-                    // Configurações do html2pdf com trava de largura para celular
-                    const opt = {
-                        margin:       0,
-                        filename:     'Orcamento_AcoFino.pdf',
-                        image:        { type: 'jpeg', quality: 0.98 },
-                        html2canvas:  { 
-                            scale: 2, 
-                            useCORS: true,       // Força leitura de imagens
-                            allowTaint: true,    // Tenta contornar bloqueios de imagem
-                            windowWidth: 794     // Impede que corte no mobile
-                        },
-                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                    };
-
-                    const pdfBlob = await html2pdf().set(opt).from(printSec).output('blob');
-                    const file = new File([pdfBlob], "Orcamento_AcoFino.pdf", { type: "application/pdf" });
-                    
-                    // Tenta abrir compartilhamento nativo (WhatsApp)
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            title: 'Orçamento Aço Fino',
-                            text: 'Segue em anexo o orçamento detalhado.',
-                            files: [file]
-                        });
-                    } else {
-                        // Se for no PC, faz o download automático
-                        const link = document.createElement('a');
-                        link.href = URL.createObjectURL(pdfBlob);
-                        link.download = 'Orcamento_AcoFino.pdf';
-                        link.click();
-                    }
-                } catch (error) {
-                    console.error("Erro ao gerar PDF: ", error);
-                    alert("Erro ao gerar o PDF. Verifique sua conexão e tente novamente.");
-                } finally {
-                    // 5. Restaura tudo para a Calculadora
-                    printSec.classList.remove('block');
-                    printSec.classList.add('hidden');
-                    app.style.display = 'flex';
-                    
-                    loading.classList.remove('flex');
-                    loading.classList.add('hidden');
-                }
-            }, 800); // Fim do setTimeout
+            // 5. Aciona o comando de impressão (Gera o PDF no celular/PC)
+            window.print();
         }
 
         function limparTudo() {
