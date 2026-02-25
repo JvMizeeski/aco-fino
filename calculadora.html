@@ -21,13 +21,10 @@
         }
     </script>
     <style>
-        /* Impede o zoom automático no iOS quando clica em inputs */
         input, select, textarea { font-size: 16px !important; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1f1f22; }
         ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
-        
-        /* Oculta scroll horizontal da página */
         body { overflow-x: hidden; width: 100%; position: relative; background-color: #0c0c0c; }
     </style>
 </head>
@@ -165,7 +162,7 @@
                         <span id="detalhe-pintura" class="text-white font-mono">R$ 0,00</span>
                     </li>
                     <li class="flex justify-between pt-1">
-                        <span>Custo Bruto (Gasto real):</span>
+                        <span>Custo Bruto (O que você gasta):</span>
                         <span id="detalhe-custo-bruto" class="text-gray-300 font-mono font-bold">R$ 0,00</span>
                     </li>
                     <li class="flex justify-between pt-2">
@@ -182,10 +179,11 @@
                     </li>
                 </ul>
             </div>
-
         </div>
+    </div>
 
-        <div class="bg-zinc-950 border-t border-gold-400/30 p-4 fixed bottom-0 w-full max-w-3xl z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+    <div class="bg-zinc-950 border-t border-gold-400/30 p-4 fixed bottom-0 w-full z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+        <div class="max-w-3xl mx-auto">
             <div class="flex justify-between items-center mb-3">
                 <div class="text-xs text-gray-400">
                     Custo Bruto: <span id="resumo-custo" class="text-white ml-1 font-mono">R$ 0,00</span>
@@ -203,7 +201,7 @@
                     </button>
                 </div>
                 <div class="col-span-9">
-                    <button onclick="compartilharPDF()" class="w-full h-[40px] bg-gold-400 hover:bg-gold-500 text-black font-bold uppercase tracking-wider text-[11px] md:text-xs rounded-md transition-colors flex justify-center items-center gap-2 shadow-lg shadow-gold-400/20">
+                    <button id="btn-compartilhar" onclick="compartilharPDF()" class="w-full h-[40px] bg-gold-400 hover:bg-gold-500 text-black font-bold uppercase tracking-wider text-[11px] md:text-xs rounded-md transition-colors flex justify-center items-center gap-2 shadow-lg shadow-gold-400/20">
                         <i class="ph ph-share-network text-lg"></i> Compartilhar PDF
                     </button>
                 </div>
@@ -211,13 +209,11 @@
         </div>
     </div>
 
-
-    <div id="print-section" class="hidden bg-white text-black p-12 w-[794px] min-h-[1122px] max-w-none mx-auto relative z-50">
+    <div id="print-section" class="hidden bg-white text-black p-10 w-[794px] min-h-[1122px] mx-auto absolute top-0 left-0 z-0">
         
-        <div class="border-b-2 border-black pb-6 mb-10 flex justify-between items-end">
+        <div class="border-b-2 border-black pb-4 mb-8 flex justify-between items-end">
             <div>
-                <img src="img/logo-site.png" crossorigin="anonymous" alt="Aço Fino" class="h-16 w-auto object-contain mb-2">
-                <p class="text-sm uppercase tracking-widest text-gray-600 mt-2 font-semibold">Móveis Estilo Industrial</p>
+                <img src="img/logo-orc.png" crossorigin="anonymous" alt="Aço Fino" class="h-16 w-auto object-contain mb-2">
             </div>
             <div class="text-right">
                 <h2 class="text-2xl font-bold tracking-widest uppercase">Orçamento</h2>
@@ -225,31 +221,31 @@
             </div>
         </div>
 
-        <p class="text-lg mb-10 text-gray-800">Abaixo estão os detalhes do projeto sob medida solicitado, contemplando materiais, estrutura e acabamentos.</p>
+        <p class="text-lg mb-8 text-gray-800">Abaixo estão os detalhes do projeto sob medida solicitado, contemplando materiais, estrutura e acabamentos.</p>
 
-        <div class="mb-12">
-            <h3 class="text-lg font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-6 text-black">Estrutura e Materiais Utilizados</h3>
-            <ul id="print-lista-materiais" class="list-disc pl-6 space-y-4 text-base text-gray-800">
+        <div class="mb-10">
+            <h3 class="text-lg font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4 text-black">Estrutura e Materiais Utilizados</h3>
+            <ul id="print-lista-materiais" class="list-disc pl-6 space-y-3 text-base text-gray-800">
                 </ul>
         </div>
 
-        <div class="mb-12">
-            <h3 class="text-lg font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-6 text-black">Serviços e Acabamentos Inclusos</h3>
-            <ul id="print-lista-servicos" class="list-disc pl-6 space-y-4 text-base text-gray-800">
+        <div class="mb-10">
+            <h3 class="text-lg font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4 text-black">Serviços e Acabamentos Inclusos</h3>
+            <ul id="print-lista-servicos" class="list-disc pl-6 space-y-3 text-base text-gray-800">
                 <li>Corte, esquadrejamento e montagem estrutural sob medida.</li>
                 <li>Soldagem premium e polimento de junções para acabamento impecável.</li>
                 </ul>
         </div>
 
-        <div class="mt-20 pt-8 border-t-2 border-black flex justify-between items-center bg-gray-50 px-6 py-8 rounded-lg">
-            <div class="text-sm text-gray-600 space-y-2">
+        <div class="mt-10 pt-8 border-t-2 border-black flex justify-between items-center bg-gray-50 px-6 py-6 rounded-lg">
+            <div class="text-sm text-gray-600 space-y-2 w-2/3">
                 <p>• Orçamento válido por 7 dias corridos.</p>
                 <p>• O prazo de produção inicia após a confirmação do projeto.</p>
                 <p>• Produto entregue pronto. Não inclui instalação no local.</p>
             </div>
-            <div class="text-right">
+            <div class="text-right w-1/3">
                 <p class="text-sm uppercase tracking-widest mb-2 text-gray-500 font-bold">Investimento Total</p>
-                <p class="text-5xl font-serif font-bold text-black" id="print-total">R$ 0,00</p>
+                <p class="text-4xl font-serif font-bold text-black" id="print-total">R$ 0,00</p>
             </div>
         </div>
     </div>
@@ -535,7 +531,7 @@
         }
 
         // ===============================================
-        // MÁGICA DO PDF CORRIGIDA (SEM CORTES NO MOBILE)
+        // MÁGICA DO PDF CORRIGIDA
         // ===============================================
         async function compartilharPDF() {
             if (materiaisAdicionados.length === 0) {
@@ -543,12 +539,15 @@
                 return;
             }
 
-            // 1. Aciona a tela de Loading
+            // 1. Força a tela a rolar para o topo absoluto (CORRIGE O BUG DO CORTE)
+            window.scrollTo({ top: 0, behavior: 'auto' });
+
+            // 2. Aciona a tela de Loading para o usuário não clicar duas vezes
             const loading = document.getElementById('loading-overlay');
             loading.classList.remove('hidden');
             loading.classList.add('flex');
 
-            // 2. Preenche os dados do PDF
+            // 3. Preenche os dados no PDF
             document.getElementById('print-data').innerText = `Data: ${new Date().toLocaleDateString('pt-BR')}`;
             
             const listaPrint = document.getElementById('print-lista-materiais');
@@ -566,40 +565,40 @@
             `;
             const qtdPintura = parseFloat(document.getElementById('qtd-pintura').value) || 0;
             if (qtdPintura > 0) {
-                servicosPrint.innerHTML += `<li>Acabamento Especial: Pintura Automotiva/Epóxi.</li>`;
+                servicosPrint.innerHTML += `<li>Acabamento Especial: Pintura Epóxi.</li>`;
             }
 
             document.getElementById('print-total').innerText = document.getElementById('preco-final').innerText;
 
-            // 3. Esconde o App e Mostra a Folha de Orçamento
+            // 4. Mostra o PDF e esconde a calculadora para a foto perfeita
             const app = document.getElementById('app-calculadora');
             const printSec = document.getElementById('print-section');
             
-            app.style.display = 'none'; // Esconde a calculadora preta
+            app.style.display = 'none'; 
             printSec.classList.remove('hidden');
-            printSec.classList.add('block'); // Exibe a folha A4 na tela
+            printSec.classList.add('block'); 
 
-            // 4. Aguarda 800ms para o navegador "respirar" e renderizar a logo
+            // Dá um tempinho pequeno pro celular processar o layout
             setTimeout(async () => {
                 try {
-                    // Configurações do html2pdf com trava de largura para celular
                     const opt = {
-                        margin:       0,
+                        margin:       [15, 0, 15, 0], // Margens: Cima, Direita, Baixo, Esquerda
                         filename:     'Orcamento_AcoFino.pdf',
                         image:        { type: 'jpeg', quality: 0.98 },
                         html2canvas:  { 
                             scale: 2, 
-                            useCORS: true,       // Força leitura de imagens
-                            allowTaint: true,    // Tenta contornar bloqueios de imagem
-                            windowWidth: 794     // Impede que corte no mobile
+                            useCORS: true, 
+                            allowTaint: true,
+                            windowWidth: 800,
+                            scrollY: 0 // <--- Garante que a foto comece do ponto 0
                         },
-                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                        pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] } // <--- Evita cortar texto no meio
                     };
 
                     const pdfBlob = await html2pdf().set(opt).from(printSec).output('blob');
                     const file = new File([pdfBlob], "Orcamento_AcoFino.pdf", { type: "application/pdf" });
                     
-                    // Tenta abrir compartilhamento nativo (WhatsApp)
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         await navigator.share({
                             title: 'Orçamento Aço Fino',
@@ -607,7 +606,6 @@
                             files: [file]
                         });
                     } else {
-                        // Se for no PC, faz o download automático
                         const link = document.createElement('a');
                         link.href = URL.createObjectURL(pdfBlob);
                         link.download = 'Orcamento_AcoFino.pdf';
@@ -617,7 +615,7 @@
                     console.error("Erro ao gerar PDF: ", error);
                     alert("Erro ao gerar o PDF. Verifique sua conexão e tente novamente.");
                 } finally {
-                    // 5. Restaura tudo para a Calculadora
+                    // Volta tudo ao normal
                     printSec.classList.remove('block');
                     printSec.classList.add('hidden');
                     app.style.display = 'flex';
@@ -625,7 +623,7 @@
                     loading.classList.remove('flex');
                     loading.classList.add('hidden');
                 }
-            }, 800); // Fim do setTimeout
+            }, 600); 
         }
 
         function limparTudo() {
