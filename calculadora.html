@@ -25,199 +25,161 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1f1f22; }
         ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+        html, body { overflow-x: hidden; width: 100%; position: relative; }
     </style>
 </head>
-<body class="bg-zinc-950 text-gray-300 font-sans antialiased min-h-screen flex flex-col selection:bg-gold-400 selection:text-black">
+<body class="bg-zinc-950 text-gray-300 font-sans antialiased min-h-screen selection:bg-gold-400 selection:text-black relative">
 
-    <div id="print-section" class="bg-white text-black p-10 fixed top-0" style="left: -9999px; width: 800px; z-index: -1;">
-        <div class="border-b-2 border-black pb-4 mb-8 flex justify-between items-end">
-            <div>
-                <img src="img/logo-site.png" alt="Aço Fino" class="h-16 w-auto object-contain mb-2">
-                <p class="text-sm uppercase tracking-widest text-gray-600 mt-1">Móveis Estilo Industrial</p>
-            </div>
-            <div class="text-right">
-                <h2 class="text-xl font-bold tracking-widest uppercase">Orçamento</h2>
-                <p class="text-base text-gray-600" id="print-data">Data: 00/00/0000</p>
-            </div>
-        </div>
-
-        <p class="text-base mb-8">Abaixo estão os detalhes do projeto sob medida solicitado, contemplando materiais, estrutura e acabamentos.</p>
-
-        <div class="mb-10">
-            <h3 class="text-base font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4">Estrutura e Materiais Utilizados</h3>
-            <ul id="print-lista-materiais" class="list-disc pl-5 space-y-3 text-base">
-                </ul>
-        </div>
-
-        <div class="mb-10">
-            <h3 class="text-base font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4">Serviços e Acabamentos Inclusos</h3>
-            <ul id="print-lista-servicos" class="list-disc pl-5 space-y-3 text-base">
-                <li>Corte, esquadrejamento e montagem estrutural.</li>
-                <li>Soldagem premium e polimento de junções para acabamento impecável.</li>
-                </ul>
-        </div>
-
-        <div class="mt-16 pt-8 border-t-2 border-black flex justify-between items-center">
-            <div class="text-sm text-gray-500 space-y-1">
-                <p>• Orçamento válido por 7 dias.</p>
-                <p>• O prazo de produção inicia após a confirmação do projeto.</p>
-                <p>• Produto entregue pronto para uso/montagem. (Não inclui instalação).</p>
-            </div>
-            <div class="text-right">
-                <p class="text-sm uppercase tracking-widest mb-2 text-gray-600">Investimento Total</p>
-                <p class="text-5xl font-serif font-bold text-black" id="print-total">R$ 0,00</p>
-            </div>
-        </div>
-    </div>
-
-
-    <div id="app-calculadora" class="max-w-3xl w-full mx-auto bg-zinc-900 border-x border-white/5 flex-1 flex flex-col shadow-2xl relative pb-36">
-        
-        <div class="bg-black/80 backdrop-blur-md p-5 border-b border-white/10 flex items-center justify-between sticky top-0 z-40">
-            <div>
-                <h1 class="text-xl md:text-2xl font-serif text-white">Calculadora <span class="text-gold-400 italic">Fina</span></h1>
-                <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest mt-1">Orçamento Rápido</p>
-            </div>
-            <i class="ph ph-calculator text-3xl text-gold-400"></i>
-        </div>
-
-        <div class="p-4 md:p-8 flex-1 flex flex-col gap-6">
+    <div class="relative z-10 bg-zinc-950 min-h-screen flex flex-col pb-36">
+        <div class="max-w-3xl w-full mx-auto bg-zinc-900 border-x border-white/5 flex-1 flex flex-col shadow-2xl relative">
             
-            <div class="bg-zinc-950 p-4 border border-white/5 rounded-md">
-                <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <i class="ph ph-magnifying-glass"></i> 1. Material Cadastrado
-                </h2>
-                <div class="space-y-4">
-                    <div class="relative">
-                        <label class="block text-xs text-gray-400 mb-1">Busque o ferro ou acessório padrão:</label>
+            <div class="bg-black/80 backdrop-blur-md p-5 border-b border-white/10 flex items-center justify-between sticky top-0 z-40">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-serif text-white">Calculadora <span class="text-gold-400 italic">Fina</span></h1>
+                    <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest mt-1">Orçamento Rápido</p>
+                </div>
+                <i class="ph ph-calculator text-3xl text-gold-400"></i>
+            </div>
+
+            <div class="p-4 md:p-8 flex-1 flex flex-col gap-6">
+                
+                <div class="bg-zinc-950 p-4 border border-white/5 rounded-md">
+                    <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="ph ph-magnifying-glass"></i> 1. Material Cadastrado
+                    </h2>
+                    <div class="space-y-4">
                         <div class="relative">
-                            <input type="text" id="input-busca" placeholder="Ex: Tubo 20x20..." onkeyup="filtrarMateriais()" autocomplete="off" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 pl-10 focus:outline-none focus:border-gold-400 transition-colors text-sm">
-                            <i class="ph ph-magnifying-glass absolute left-3 top-3.5 text-gray-400 text-lg"></i>
+                            <label class="block text-xs text-gray-400 mb-1">Busque o ferro ou acessório padrão:</label>
+                            <div class="relative">
+                                <input type="text" id="input-busca" placeholder="Ex: Tubo 20x20..." onkeyup="filtrarMateriais()" autocomplete="off" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 pl-10 focus:outline-none focus:border-gold-400 transition-colors text-sm">
+                                <i class="ph ph-magnifying-glass absolute left-3 top-3.5 text-gray-400 text-lg"></i>
+                            </div>
+                            <ul id="dropdown-materiais" class="absolute z-50 w-full bg-zinc-800 border border-zinc-700 mt-1 max-h-60 overflow-y-auto rounded-md shadow-2xl hidden">
+                            </ul>
                         </div>
-                        <ul id="dropdown-materiais" class="absolute z-50 w-full bg-zinc-800 border border-zinc-700 mt-1 max-h-60 overflow-y-auto rounded-md shadow-2xl hidden">
-                        </ul>
+                        <div class="flex gap-2 items-end">
+                            <div class="w-[60%]">
+                                <label class="block text-xs text-gray-400 mb-1" id="label-quantidade">Metros / Qtd.</label>
+                                <input type="number" id="input-metros" step="0.1" placeholder="Ex: 2.5" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 transition-colors text-sm text-center">
+                            </div>
+                            <div class="w-[40%]">
+                                <button onclick="adicionarMaterial()" class="w-full h-[46px] bg-zinc-800 border border-gold-400/30 hover:bg-gold-400 hover:text-black text-gold-400 text-xs font-bold uppercase tracking-wider rounded-md transition-colors flex justify-center items-center gap-1">
+                                    <i class="ph ph-plus-circle text-lg"></i> Add
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex gap-2 items-end">
-                        <div class="w-[60%]">
-                            <label class="block text-xs text-gray-400 mb-1" id="label-quantidade">Metros / Qtd.</label>
-                            <input type="number" id="input-metros" step="0.1" placeholder="Ex: 2.5" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 transition-colors text-sm text-center">
+                </div>
+
+                <div class="bg-zinc-950 p-4 border border-white/5 rounded-md -mt-2">
+                    <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="ph ph-package"></i> 2. Insumos Extras Livres
+                    </h2>
+                    <div class="grid grid-cols-12 gap-2 items-end">
+                        <div class="col-span-6">
+                            <label class="block text-xs text-gray-400 mb-1">O que é?</label>
+                            <input type="text" id="input-extra-nome" placeholder="Ex: Madeira" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 text-sm">
                         </div>
-                        <div class="w-[40%]">
-                            <button onclick="adicionarMaterial()" class="w-full h-[46px] bg-zinc-800 border border-gold-400/30 hover:bg-gold-400 hover:text-black text-gold-400 text-xs font-bold uppercase tracking-wider rounded-md transition-colors flex justify-center items-center gap-1">
-                                <i class="ph ph-plus-circle text-lg"></i> Add
+                        <div class="col-span-3">
+                            <label class="block text-xs text-gray-400 mb-1">R$ Total</label>
+                            <input type="number" id="input-extra-valor" placeholder="0.00" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 text-sm text-center">
+                        </div>
+                        <div class="col-span-3">
+                            <button onclick="adicionarExtra()" class="w-full h-[46px] bg-zinc-800 border border-gold-400/30 hover:bg-gold-400 hover:text-black text-gold-400 text-xs font-bold uppercase rounded-md transition-colors flex justify-center items-center">
+                                Add
                             </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="bg-zinc-950 p-4 border border-white/5 rounded-md -mt-2">
-                <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <i class="ph ph-package"></i> 2. Insumos Extras Livres
-                </h2>
-                <div class="grid grid-cols-12 gap-2 items-end">
-                    <div class="col-span-6">
-                        <label class="block text-xs text-gray-400 mb-1">O que é?</label>
-                        <input type="text" id="input-extra-nome" placeholder="Ex: Madeira" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 text-sm">
-                    </div>
-                    <div class="col-span-3">
-                        <label class="block text-xs text-gray-400 mb-1">R$ Total</label>
-                        <input type="number" id="input-extra-valor" placeholder="0.00" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 text-sm text-center">
-                    </div>
-                    <div class="col-span-3">
-                        <button onclick="adicionarExtra()" class="w-full h-[46px] bg-zinc-800 border border-gold-400/30 hover:bg-gold-400 hover:text-black text-gold-400 text-xs font-bold uppercase rounded-md transition-colors flex justify-center items-center">
-                            Add
-                        </button>
+                <div>
+                    <h2 class="text-xs font-bold text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-2">Lista da Peça</h2>
+                    <div id="lista-materiais" class="space-y-2 min-h-[80px]">
+                        <p class="text-xs text-gray-600 italic py-2">Nenhum item adicionado ainda.</p>
                     </div>
                 </div>
-            </div>
 
-            <div>
-                <h2 class="text-xs font-bold text-white uppercase tracking-wider mb-2 border-b border-white/10 pb-2">Lista da Peça</h2>
-                <div id="lista-materiais" class="space-y-2 min-h-[80px]">
-                    <p class="text-xs text-gray-600 italic py-2">Nenhum item adicionado ainda.</p>
-                </div>
-            </div>
-
-            <div class="bg-zinc-950 p-4 border border-white/5 rounded-md mt-2">
-                <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <i class="ph ph-paint-roller"></i> 3. Pintura / Acabamento
-                </h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">Metros Pintura</label>
-                        <input type="number" id="qtd-pintura" value="0" step="0.1" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 text-center focus:outline-none focus:border-gold-400">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">M² Pintura (R$)</label>
-                        <input type="number" id="valor-pintura" value="8.00" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 text-center focus:outline-none focus:border-gold-400">
+                <div class="bg-zinc-950 p-4 border border-white/5 rounded-md mt-2">
+                    <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i class="ph ph-paint-roller"></i> 3. Pintura / Acabamento
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">Metros Pintura</label>
+                            <input type="number" id="qtd-pintura" value="0" step="0.1" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 text-center focus:outline-none focus:border-gold-400">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">M² Pintura (R$)</label>
+                            <input type="number" id="valor-pintura" value="8.00" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 text-center focus:outline-none focus:border-gold-400">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="bg-zinc-950 p-4 border border-white/5 rounded-md mt-2">
-                <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="ph ph-chart-line-up"></i> 4. Complexidade (Multiplicador)
-                </h2>
-                <div class="flex items-center gap-4">
-                    <div class="w-1/3">
-                        <input type="number" id="multiplicador" value="2.5" step="0.1" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 font-bold text-lg text-center">
-                    </div>
-                    <div class="w-2/3">
-                        <p class="text-[10px] text-gray-500 leading-tight">Define sua margem de lucro e mão de obra com base na dificuldade da peça (Ex: 2.5x, 3x, 4x).</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-zinc-950 p-4 border border-white/5 rounded-md mt-2">
-                <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="ph ph-shield-check"></i> 5. Margem Extra (%)
-                </h2>
-                <div class="flex items-center gap-4">
-                    <div class="w-1/3">
-                        <input type="number" id="margem-lucro" value="15" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 font-bold text-lg text-center">
-                    </div>
-                    <div class="w-2/3">
-                        <p class="text-[10px] text-gray-500 leading-tight">Cobre custos que não dão para prever ou medir (disco de corte extra, gás da solda, lixas, frete).</p>
+                <div class="bg-zinc-950 p-4 border border-white/5 rounded-md mt-2">
+                    <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                        <i class="ph ph-chart-line-up"></i> 4. Complexidade (Multiplicador)
+                    </h2>
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/3">
+                            <input type="number" id="multiplicador" value="2.5" step="0.1" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 font-bold text-lg text-center">
+                        </div>
+                        <div class="w-2/3">
+                            <p class="text-[10px] text-gray-500 leading-tight">Define sua margem de lucro e mão de obra com base na dificuldade da peça (Ex: 2.5x, 3x, 4x).</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="bg-zinc-900 border border-zinc-700 rounded-md p-4 mt-2 mb-4">
-                <h2 class="text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-zinc-700 pb-2">
-                    <i class="ph ph-receipt text-gold-400"></i> 6. Detalhamento dos Custos
-                </h2>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li class="flex justify-between">
-                        <span>Materiais e Insumos:</span>
-                        <span id="detalhe-materiais" class="text-white font-mono">R$ 0,00</span>
-                    </li>
-                    <li class="flex justify-between border-b border-zinc-700 pb-2">
-                        <span>Pintura Terceirizada:</span>
-                        <span id="detalhe-pintura" class="text-white font-mono">R$ 0,00</span>
-                    </li>
-                    <li class="flex justify-between pt-1">
-                        <span>Custo Bruto (O que você gasta):</span>
-                        <span id="detalhe-custo-bruto" class="text-gray-300 font-mono font-bold">R$ 0,00</span>
-                    </li>
-                    <li class="flex justify-between pt-2">
-                        <span>Margem Imprevistos (<span id="txt-porcentagem-margem">15</span>%):</span>
-                        <span id="detalhe-margem" class="text-gray-300 font-mono">R$ 0,00</span>
-                    </li>
-                    <li class="flex justify-between pt-2">
-                        <span class="text-gold-400/80">Sua Mão de Obra e Lucro:</span>
-                        <span id="detalhe-lucro" class="text-gold-400 font-mono">R$ 0,00</span>
-                    </li>
-                    <li class="flex justify-between font-bold text-white pt-3 border-t border-zinc-700 mt-2 text-lg">
-                        <span>Total Sugerido:</span>
-                        <span id="detalhe-total" class="text-gold-400 font-mono">R$ 0,00</span>
-                    </li>
-                </ul>
-            </div>
+                <div class="bg-zinc-950 p-4 border border-white/5 rounded-md mt-2">
+                    <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                        <i class="ph ph-shield-check"></i> 5. Margem Extra (%)
+                    </h2>
+                    <div class="flex items-center gap-4">
+                        <div class="w-1/3">
+                            <input type="number" id="margem-lucro" value="15" oninput="calcularTotal()" class="w-full bg-zinc-900 border border-zinc-700 text-white rounded-md p-3 focus:outline-none focus:border-gold-400 font-bold text-lg text-center">
+                        </div>
+                        <div class="w-2/3">
+                            <p class="text-[10px] text-gray-500 leading-tight">Cobre custos que não dão para prever ou medir (disco de corte extra, gás da solda, lixas, frete).</p>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="bg-zinc-900 border border-zinc-700 rounded-md p-4 mt-2 mb-4">
+                    <h2 class="text-xs font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-zinc-700 pb-2">
+                        <i class="ph ph-receipt text-gold-400"></i> 6. Detalhamento dos Custos
+                    </h2>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex justify-between">
+                            <span>Materiais e Insumos:</span>
+                            <span id="detalhe-materiais" class="text-white font-mono">R$ 0,00</span>
+                        </li>
+                        <li class="flex justify-between border-b border-zinc-700 pb-2">
+                            <span>Pintura Terceirizada:</span>
+                            <span id="detalhe-pintura" class="text-white font-mono">R$ 0,00</span>
+                        </li>
+                        <li class="flex justify-between pt-1">
+                            <span>Custo Bruto (O que você gasta):</span>
+                            <span id="detalhe-custo-bruto" class="text-gray-300 font-mono font-bold">R$ 0,00</span>
+                        </li>
+                        <li class="flex justify-between pt-2">
+                            <span>Margem Imprevistos (<span id="txt-porcentagem-margem">15</span>%):</span>
+                            <span id="detalhe-margem" class="text-gray-300 font-mono">R$ 0,00</span>
+                        </li>
+                        <li class="flex justify-between pt-2">
+                            <span class="text-gold-400/80">Sua Mão de Obra e Lucro:</span>
+                            <span id="detalhe-lucro" class="text-gold-400 font-mono">R$ 0,00</span>
+                        </li>
+                        <li class="flex justify-between font-bold text-white pt-3 border-t border-zinc-700 mt-2 text-lg">
+                            <span>Total Sugerido:</span>
+                            <span id="detalhe-total" class="text-gold-400 font-mono">R$ 0,00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div class="bg-zinc-950 border-t border-gold-400/30 p-4 fixed bottom-0 w-full max-w-3xl z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+    <div class="bg-zinc-950 border-t border-gold-400/30 p-4 fixed bottom-0 w-full z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+        <div class="max-w-3xl mx-auto">
             <div class="flex justify-between items-center mb-3">
                 <div class="text-xs text-gray-400">
                     Custo Bruto: <span id="resumo-custo" class="text-white ml-1 font-mono">R$ 0,00</span>
@@ -239,6 +201,47 @@
                         <i class="ph ph-share-network text-lg"></i> Compartilhar Orçamento
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="print-section" class="bg-white text-black p-10 absolute top-0 left-0 w-[800px] min-h-[1100px] z-0">
+        <div class="border-b-2 border-black pb-4 mb-8 flex justify-between items-end">
+            <div>
+                <img src="img/logo-site.png" crossorigin="anonymous" alt="Aço Fino" class="h-16 w-auto object-contain mb-2">
+                <p class="text-sm uppercase tracking-widest text-gray-600 mt-1">Móveis Estilo Industrial</p>
+            </div>
+            <div class="text-right">
+                <h2 class="text-xl font-bold tracking-widest uppercase">Orçamento</h2>
+                <p class="text-base text-gray-600" id="print-data">Data: 00/00/0000</p>
+            </div>
+        </div>
+
+        <p class="text-base mb-8">Abaixo estão os detalhes do projeto sob medida solicitado, contemplando materiais, estrutura e acabamentos.</p>
+
+        <div class="mb-10">
+            <h3 class="text-base font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4">Estrutura e Materiais Utilizados</h3>
+            <ul id="print-lista-materiais" class="list-disc pl-5 space-y-3 text-base font-medium">
+                </ul>
+        </div>
+
+        <div class="mb-10">
+            <h3 class="text-base font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4">Serviços e Acabamentos Inclusos</h3>
+            <ul id="print-lista-servicos" class="list-disc pl-5 space-y-3 text-base">
+                <li>Corte, esquadrejamento e montagem estrutural.</li>
+                <li>Soldagem premium e polimento de junções para acabamento impecável.</li>
+                </ul>
+        </div>
+
+        <div class="mt-16 pt-8 border-t-2 border-black flex justify-between items-center">
+            <div class="text-sm text-gray-500 space-y-1">
+                <p>• Orçamento válido por 7 dias.</p>
+                <p>• O prazo de produção inicia após a confirmação do projeto.</p>
+                <p>• Produto entregue pronto para uso/montagem. (Não inclui instalação no local).</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm uppercase tracking-widest mb-2 text-gray-600">Investimento Total</p>
+                <p class="text-5xl font-serif font-bold text-black" id="print-total">R$ 0,00</p>
             </div>
         </div>
     </div>
@@ -386,6 +389,7 @@
                 document.getElementById('label-quantidade').innerText = 'Metros Usados';
                 document.getElementById('input-metros').placeholder = 'Ex: 2.5';
             }
+            
             document.getElementById('input-metros').focus(); 
         }
 
@@ -412,10 +416,10 @@
 
             if (materialSelecionado.porUnidade) {
                 custoCalculado = materialSelecionado.preco * quantidade;
-                labelUnidade = quantidade > 1 ? "unidades" : "unidade";
+                labelUnidade = quantidade > 1 ? "unid." : "unid.";
             } else {
                 custoCalculado = (materialSelecionado.preco / 6) * quantidade;
-                labelUnidade = "metros";
+                labelUnidade = "m";
             }
 
             materiaisAdicionados.push({
@@ -509,6 +513,7 @@
             const multiplicador = parseFloat(document.getElementById('multiplicador').value) || 1;
             
             const precoFinal = (custoBruto * multiplicador) + valorMargem;
+
             const lucroMaoDeObra = precoFinal - custoComMargem;
 
             document.getElementById('txt-porcentagem-margem').innerText = percentualMargem;
@@ -534,17 +539,17 @@
 
             const btnShare = document.getElementById('btn-compartilhar');
             const textoOriginal = btnShare.innerHTML;
-            btnShare.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> Preparando...';
+            btnShare.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> Aguarde...';
             btnShare.disabled = true;
 
-            // 1. Alimenta a parte invisível do PDF com os dados
+            // 1. Alimenta a parte do PDF com os dados
             document.getElementById('print-data').innerText = `Data: ${new Date().toLocaleDateString('pt-BR')}`;
             
             const listaPrint = document.getElementById('print-lista-materiais');
             listaPrint.innerHTML = '';
             materiaisAdicionados.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>${item.nome}</strong> (${item.quantidade} ${item.labelUnidade})`;
+                li.innerHTML = `<strong>${item.nome}</strong> - (${item.quantidade} ${item.labelUnidade})`;
                 listaPrint.appendChild(li);
             });
 
@@ -561,29 +566,30 @@
             document.getElementById('print-total').innerText = document.getElementById('preco-final').innerText;
 
             try {
-                // 2. Transforma o HTML invisível em um arquivo PDF
                 const elemento = document.getElementById('print-section');
+                
+                // Configurações do PDF (useCORS e allowTaint forçam a carregar a imagem)
                 const opt = {
                     margin:       15,
                     filename:     'Orcamento_AcoFino.pdf',
                     image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true },
+                    html2canvas:  { scale: 2, useCORS: true, allowTaint: true },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
 
                 const pdfBlob = await html2pdf().set(opt).from(elemento).output('blob');
                 
-                // 3. Verifica se o celular consegue abrir a janela nativa de compartilhamento (WhatsApp)
                 const file = new File([pdfBlob], "Orcamento_AcoFino.pdf", { type: "application/pdf" });
                 
+                // Tenta abrir a gaveta nativa de compartilhamento (WhatsApp) do celular
                 if (navigator.canShare && navigator.canShare({ files: [file] })) {
                     await navigator.share({
                         title: 'Orçamento - Aço Fino',
-                        text: 'Olá! Segue em anexo o orçamento do seu projeto.',
+                        text: 'Olá! Segue o orçamento do seu projeto em anexo.',
                         files: [file]
                     });
                 } else {
-                    // Se estiver no PC ou se o navegador não suportar, faz o download direto
+                    // Se não tiver suporte (ex: no PC), faz o download comum
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(pdfBlob);
                     link.download = 'Orcamento_AcoFino.pdf';
@@ -592,8 +598,7 @@
 
             } catch (error) {
                 console.error(error);
-                alert("Não foi possível gerar o PDF. Fechando para tentar imprimir.");
-                window.print();
+                alert("Não foi possível gerar o PDF. Verifique se o link está online.");
             } finally {
                 btnShare.innerHTML = textoOriginal;
                 btnShare.disabled = false;
