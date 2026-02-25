@@ -26,15 +26,72 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1f1f22; }
         ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+
+        /* --- MÁGICA DA IMPRESSÃO / PDF --- */
+        @media print {
+            /* Força fundo branco e esconde tudo da calculadora */
+            body { background-color: white !important; color: black !important; }
+            #app-calculadora { display: none !important; }
+            
+            /* Mostra apenas a folha de orçamento do cliente */
+            #print-section { 
+                display: block !important; 
+                visibility: visible !important; 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 100%; 
+                margin: 0; 
+                padding: 20px; 
+            }
+        }
     </style>
 </head>
-<body class="bg-zinc-950 text-gray-300 font-sans antialiased min-h-screen flex flex-col selection:bg-gold-400 selection:text-black">
+<body class="bg-zinc-950 text-gray-300 font-sans antialiased min-h-screen selection:bg-gold-400 selection:text-black">
 
-    <div class="max-w-3xl w-full mx-auto bg-zinc-900 border-x border-white/5 flex-1 flex flex-col shadow-2xl relative pb-32">
+    <div id="print-section" class="hidden bg-white text-black p-8 max-w-4xl mx-auto">
+        <div class="border-b-2 border-black pb-4 mb-8 flex justify-between items-end">
+            <div>
+                <img src="img/logo-orc.png" alt="Logo" style="width: 120px;">
+            </div>
+            <div class="text-right">
+                <h2 class="text-lg font-bold tracking-widest uppercase">Orçamento</h2>
+                <p class="text-sm text-gray-600" id="print-data">Data: 00/00/0000</p>
+            </div>
+        </div>
+
+        <p class="text-sm mb-6">Abaixo estão os detalhes do projeto sob medida solicitado, contemplando materiais, estrutura e acabamentos.</p>
+
+        <div class="mb-8">
+            <h3 class="text-sm font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4">Estrutura e Materiais Utilizados</h3>
+            <ul id="print-lista-materiais" class="list-disc pl-5 space-y-2 text-sm">
+                </ul>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="text-sm font-bold uppercase tracking-wider border-b border-gray-300 pb-2 mb-4">Serviços e Acabamentos Inclusos</h3>
+            <ul id="print-lista-servicos" class="list-disc pl-5 space-y-2 text-sm">
+                <li>Corte, esquadrejamento e montagem estrutural.</li>
+                <li>Soldagem premium e polimento de junções.</li>
+                </ul>
+        </div>
+
+        <div class="mt-12 pt-6 border-t-2 border-black flex justify-between items-center">
+            <div class="text-xs text-gray-500">
+                <p>• Orçamento válido por 7 dias.</p>
+                <p>• O prazo de produção inicia após a confirmação.</p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs uppercase tracking-widest mb-1 text-gray-600">Valor Total do Projeto</p>
+                <p class="text-3xl font-serif font-bold" id="print-total">R$ 0,00</p>
+            </div>
+        </div>
+    </div>
+    <div id="app-calculadora" class="max-w-3xl w-full mx-auto bg-zinc-900 border-x border-white/5 flex-1 flex flex-col shadow-2xl relative pb-36">
         
         <div class="bg-black/80 backdrop-blur-md p-5 border-b border-white/10 flex items-center justify-between sticky top-0 z-40">
             <div>
-                <h1 class="text-xl md:text-2xl font-serif text-white">Calculadora <span class="text-gold-400 italic">Aço Fino</span></h1>
+                <h1 class="text-xl md:text-2xl font-serif text-white">Calculadora <span class="text-gold-400 italic">Fina</span></h1>
                 <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest mt-1">Orçamento Rápido</p>
             </div>
             <i class="ph ph-calculator text-3xl text-gold-400"></i>
@@ -46,7 +103,6 @@
                 <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="ph ph-magnifying-glass"></i> 1. Material Cadastrado
                 </h2>
-                
                 <div class="space-y-4">
                     <div class="relative">
                         <label class="block text-xs text-gray-400 mb-1">Busque o ferro ou acessório padrão:</label>
@@ -57,7 +113,6 @@
                         <ul id="dropdown-materiais" class="absolute z-50 w-full bg-zinc-800 border border-zinc-700 mt-1 max-h-60 overflow-y-auto rounded-md shadow-2xl hidden">
                         </ul>
                     </div>
-                    
                     <div class="flex gap-2 items-end">
                         <div class="w-[60%]">
                             <label class="block text-xs text-gray-400 mb-1" id="label-quantidade">Metros / Qtd.</label>
@@ -76,7 +131,6 @@
                 <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="ph ph-package"></i> 2. Insumos Extras Livres
                 </h2>
-                
                 <div class="grid grid-cols-12 gap-2 items-end">
                     <div class="col-span-6">
                         <label class="block text-xs text-gray-400 mb-1">O que é?</label>
@@ -105,7 +159,6 @@
                 <h2 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="ph ph-paint-roller"></i> 3. Pintura / Acabamento
                 </h2>
-                
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[10px] text-gray-400 mb-1 uppercase tracking-wider">Metros Pintura</label>
@@ -181,22 +234,28 @@
         </div>
 
         <div class="bg-zinc-950 border-t border-gold-400/30 p-4 fixed bottom-0 w-full max-w-3xl z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
-            <div class="flex justify-between items-center mb-2">
+            
+            <div class="flex justify-between items-center mb-3">
                 <div class="text-xs text-gray-400">
-                    Custo Bruto: <span id="resumo-custo" class="text-white ml-1 font-mono">R$ 0,00</span>
+                    Custo: <span id="resumo-custo" class="text-white ml-1 font-mono">R$ 0,00</span>
                 </div>
-                <div class="text-xs text-gold-400/80 font-bold">
-                    Multiplicado: <span id="resumo-multiplicador" class="ml-1 font-mono">2.5x</span>
+                <div class="text-right">
+                    <span class="block text-[10px] uppercase tracking-widest text-gold-400">Valor pro Cliente</span>
+                    <span id="preco-final" class="text-2xl font-serif text-white font-bold leading-none">R$ 0,00</span>
                 </div>
             </div>
-            <div class="flex justify-between items-end border-t border-white/10 pt-2">
-                <div>
-                    <span class="block text-[10px] uppercase tracking-widest text-gold-400">Valor Final P/ o Cliente</span>
-                    <span id="preco-final" class="text-3xl font-serif text-white font-bold leading-none">R$ 0,00</span>
+
+            <div class="grid grid-cols-12 gap-2 border-t border-white/10 pt-3">
+                <div class="col-span-3">
+                    <button onclick="limparTudo()" class="w-full h-[40px] bg-red-900/20 text-red-400 rounded-md hover:bg-red-900/50 transition-colors flex justify-center items-center">
+                        <i class="ph ph-trash text-lg"></i>
+                    </button>
                 </div>
-                <button onclick="limparTudo()" class="text-xs bg-red-900/30 text-red-400 px-4 py-2 rounded-md hover:bg-red-900/50 transition-colors">
-                    Limpar Tudo
-                </button>
+                <div class="col-span-9">
+                    <button onclick="gerarPDF()" class="w-full h-[40px] bg-gold-400 hover:bg-gold-500 text-black font-bold uppercase tracking-wider text-xs rounded-md transition-colors flex justify-center items-center gap-2 shadow-lg shadow-gold-400/20">
+                        <i class="ph ph-file-pdf text-lg"></i> Gerar Orçamento (PDF)
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -309,7 +368,6 @@
             return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        // --- SISTEMA DE BUSCA ---
         function filtrarMateriais() {
             const termo = document.getElementById('input-busca').value.toLowerCase();
             const dropdown = document.getElementById('dropdown-materiais');
@@ -363,7 +421,6 @@
             }
         });
 
-        // --- LÓGICA DE ADICIONAR ---
         function adicionarMaterial() {
             if (!materialSelecionado) {
                 alert("Por favor, busque e selecione um material na lista.");
@@ -418,7 +475,7 @@
             materiaisAdicionados.push({
                 nome: nome,
                 quantidade: 1,
-                labelUnidade: "item extra",
+                labelUnidade: "item",
                 custo: custo,
                 tipo: 'extra'
             });
@@ -466,49 +523,76 @@
         }
 
         function calcularTotal() {
-            // 1. Total Ferro, Peças e Insumos Extras
             const totalMateriais = materiaisAdicionados.reduce((acc, item) => acc + item.custo, 0);
 
-            // 2. Total Pintura
             const qtdPintura = parseFloat(document.getElementById('qtd-pintura').value) || 0;
             const valorPintura = parseFloat(document.getElementById('valor-pintura').value) || 0;
             const totalPintura = qtdPintura * valorPintura;
 
-            // 3. Custo Bruto Base (Materiais + Pintura)
             const custoBruto = totalMateriais + totalPintura;
 
-            // 4. Margem de Quebra/Consumíveis (Calculada sobre o custo bruto)
             const percentualMargem = parseFloat(document.getElementById('margem-lucro').value) || 0;
             const valorMargem = custoBruto * (percentualMargem / 100);
 
-            // 5. Custo Bruto Total (Material + Pintura + Margem Imprevistos)
             const custoComMargem = custoBruto + valorMargem;
 
-            // 6. Multiplicador de Complexidade (Aplica o lucro de Mão de Obra)
             const multiplicador = parseFloat(document.getElementById('multiplicador').value) || 1;
             
-            // 7. Preço Final Sugerido
-            // Multiplicamos o Custo Bruto pelo Fator, e então somamos a Margem Extra
             const precoFinal = (custoBruto * multiplicador) + valorMargem;
 
-            // 8. Lucro / Mão de Obra Limpa
             const lucroMaoDeObra = precoFinal - custoComMargem;
 
-            // Atualiza Textos da Tela
             document.getElementById('txt-porcentagem-margem').innerText = percentualMargem;
-
-            // Atualiza Rodapé Fixo
             document.getElementById('resumo-custo').innerText = formatarMoeda(custoBruto);
-            document.getElementById('resumo-multiplicador').innerText = multiplicador + "x";
             document.getElementById('preco-final').innerText = formatarMoeda(precoFinal);
 
-            // Atualiza Detalhamento Interno
             document.getElementById('detalhe-materiais').innerText = formatarMoeda(totalMateriais);
             document.getElementById('detalhe-pintura').innerText = formatarMoeda(totalPintura);
             document.getElementById('detalhe-custo-bruto').innerText = formatarMoeda(custoBruto);
             document.getElementById('detalhe-margem').innerText = formatarMoeda(valorMargem);
             document.getElementById('detalhe-lucro').innerText = formatarMoeda(lucroMaoDeObra);
             document.getElementById('detalhe-total').innerText = formatarMoeda(precoFinal);
+        }
+
+        // --- FUNÇÃO DE GERAR ORÇAMENTO PARA O CLIENTE ---
+        function gerarPDF() {
+            if (materiaisAdicionados.length === 0) {
+                alert("Adicione pelo menos um material antes de gerar o orçamento do cliente.");
+                return;
+            }
+
+            // 1. Preenche a Data
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('print-data').innerText = `Data: ${dataAtual}`;
+
+            // 2. Preenche a lista de Materiais do Cliente (SEM OS PREÇOS)
+            const listaPrint = document.getElementById('print-lista-materiais');
+            listaPrint.innerHTML = '';
+            materiaisAdicionados.forEach(item => {
+                const li = document.createElement('li');
+                // Exibe: "Tubo Quadrado 20x20 - 4 metros"
+                li.innerHTML = `<strong>${item.nome}</strong> (${item.quantidade} ${item.labelUnidade})`;
+                listaPrint.appendChild(li);
+            });
+
+            // 3. Preenche a lista de Serviços do Cliente
+            const servicosPrint = document.getElementById('print-lista-servicos');
+            servicosPrint.innerHTML = `
+                <li>Corte, esquadrejamento e montagem estrutural.</li>
+                <li>Soldagem premium e polimento de junções.</li>
+            `;
+            
+            const qtdPintura = parseFloat(document.getElementById('qtd-pintura').value) || 0;
+            if (qtdPintura > 0) {
+                servicosPrint.innerHTML += `<li>Acabamento Especial: Pintura Epóxi.</li>`;
+            }
+
+            // 4. Pega o Preço Final redondo da calculadora e joga pro PDF
+            const precoFinal = document.getElementById('preco-final').innerText;
+            document.getElementById('print-total').innerText = precoFinal;
+
+            // 5. Aciona o comando de impressão (Gera o PDF no celular/PC)
+            window.print();
         }
 
         function limparTudo() {
